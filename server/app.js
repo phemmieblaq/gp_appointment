@@ -1,11 +1,27 @@
-const express = require('express');
+const express = require("express");
 const app = express();
-const port = 3000;
+const http = require("http");
+const dotenv = require("dotenv");
+const doctorRoute = require("./src/routes/doctor");
+const patientRoute = require("./src/routes/patient");
+const { ErrorHandler } = require("./src/middleware/errorHandler");
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+app.use(express.json());
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+dotenv.config();
+
+//routes
+app.use("/doctor", doctorRoute);
+app.use("/patient", patientRoute);
+
+//Error handler
+app.use(ErrorHandler);
+
+//create server
+const server = http.createServer(app);
+
+const port = process.env.PORT || 8000;
+
+server.listen(port, () => {
+  console.log(`App listening at http://localhost:${port}`);
 });
