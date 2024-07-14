@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const http = require("http");
 const dotenv = require("dotenv");
+const authRoute = require("./src/routes/auth");
 const doctorRoute = require("./src/routes/doctor");
 const patientRoute = require("./src/routes/patient");
 const { ErrorHandler } = require("./src/middleware/errorHandler");
@@ -11,6 +12,7 @@ app.use(express.json());
 dotenv.config();
 
 //routes
+app.use("/user", authRoute);
 app.use("/doctor", doctorRoute);
 app.use("/patient", patientRoute);
 
