@@ -1,4 +1,5 @@
-const { valueHasher } = require("../../../util/hash");
+const { valueHasher } = require("../util/hash");
+const { getUsersByRole } = require("../service/auth");
 const { createAccount, userLogin } = require("../service/auth");
 const { validateInput } = require("../util");
 const { BadRequest } = require("../util/requestError");
@@ -58,6 +59,19 @@ exports.Login = async (req, res, next) => {
       data: login.data,
       statusCode: login.statusCode,
       expiresIn: login.expiresIn,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.GetUsersByRole = async (req, res, next) => {
+  try {
+    const users = await getUsersByRole();
+    return res.status(users.statusCode).json({
+      message: users.message,
+      data: users.data,
+      statusCode: users.statusCode,
     });
   } catch (error) {
     next(error);

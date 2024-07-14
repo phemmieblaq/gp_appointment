@@ -1,9 +1,10 @@
-const { dbPool } = require("../../../config/dbConnection");
+const { dbPool } = require("../config/dbConnection");
 const {
   createUserQuery,
   checkUserByEmailQuery,
-} = require("../../../query/auth");
-const { matchChecker } = require("../../../util/hash");
+  checkUsersByRole,
+} = require("../query/auth");
+const { matchChecker } = require("../util/hash");
 const { BadRequest, NotFound } = require("../util/requestError");
 const { generateToken } = require("../util/token");
 
@@ -85,7 +86,25 @@ const userLogin = async (payload) => {
   }
 };
 
+const getUsersByRole = async (role) => {
+  try {
+    const getUsersByRole = await dbPool.query(checkUsersByRole, [role]);
+    if (checkUserExistence.rowCount < 1) {
+      throw new NotFound("No record found!");
+    }
+
+    return {
+      message: `${role.charAt(0).toUpperCase()} fetched successfully`,
+      data: getUsersByRole.rows,
+      statusCode: 200,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   createAccount,
   userLogin,
+  getUsersByRole,
 };

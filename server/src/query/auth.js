@@ -23,6 +23,7 @@ const deleteUserQuery = `
 `;
 
 const checkUserByRoleAndIDQuery = `SELECT * FROM users WHERE id = $1 AND role = $2`;
+const checkUsersByRole = `SELECT * FROM users WHERE role = $1`;
 
 module.exports = {
   checkUserByEmailQuery,
@@ -33,4 +34,5 @@ module.exports = {
   checkCodeExistenceQuery,
   deleteUserQuery,
   checkUserByRoleAndIDQuery,
+  checkUsersByRole,
 };
