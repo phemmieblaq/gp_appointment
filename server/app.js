@@ -5,16 +5,22 @@ const dotenv = require("dotenv");
 const authRoute = require("./src/routes/auth");
 const doctorRoute = require("./src/routes/doctor");
 const patientRoute = require("./src/routes/patient");
+const hospitalRoute = require("./src/routes/hospital");
 const { ErrorHandler } = require("./src/middleware/errorHandler");
+const { DatabaseConnection } = require("./src/config/dbConnection");
 
 app.use(express.json());
 
 dotenv.config();
 
+// Initialize database connection
+DatabaseConnection();
+
 //routes
-app.use("/user", authRoute);
+app.use("/users", authRoute);
 app.use("/doctor", doctorRoute);
 app.use("/patient", patientRoute);
+app.use("/hospitals", hospitalRoute);
 
 //Error handler
 app.use(ErrorHandler);

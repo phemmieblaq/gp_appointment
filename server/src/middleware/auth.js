@@ -6,7 +6,7 @@ const { checkUserByRoleAndIDQuery } = require("../query/auth");
 // Middleware function to authorize incoming requests
 const authorizer = (role) => {
   return async (req, res, next) => {
-    const token = req.cookies.accessToken; // Access the token from HTTP-only cookies
+    const token = req?.cookies?.accessToken; // Access the token from HTTP-only cookies
 
     // Check if token is missing
     if (!token) {

@@ -1,12 +1,17 @@
 const { valueHasher } = require("../util/hash");
-const { getUsersByRole } = require("../service/auth");
+const {
+  getUsersByRole,
+  updateUser,
+  getAllDoctorsByState,
+  verifyAccount,
+} = require("../service/auth");
 const { createAccount, userLogin } = require("../service/auth");
 const { validateInput } = require("../util");
 const { BadRequest } = require("../util/requestError");
 
 exports.UserRegistration = async (req, res, next) => {
   try {
-    const { full_name, email, password, phone, role } = req.body;
+    const { full_name, email, password, role } = req.body;
     if (!validateInput(full_name, "name")) {
       throw new BadRequest("Invalid full name provided.");
     }
@@ -18,18 +23,13 @@ exports.UserRegistration = async (req, res, next) => {
         "Your first name must be between 3 and 100 characters."
       );
     }
-    if (!validateInput(phone, "length", 8, 12)) {
-      throw new BadRequest(
-        "Your phone number must be between 8 and 12 characters."
-      );
-    }
     if (!validateInput(password, "length", 6, 30)) {
       throw new BadRequest("Your password must be at least 6 characters.");
     }
 
     const cryptedPassword = await valueHasher(password, 12);
 
-    const values = [full_name, email, phone, cryptedPassword, role];
+    const values = [full_name, email, cryptedPassword, role];
     const createUser = await createAccount(values);
 
     return res.status(createUser.statusCode).json({
@@ -37,6 +37,18 @@ exports.UserRegistration = async (req, res, next) => {
       data: createUser.data,
       statusCode: createUser.statusCode,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.UserVerification = async (req, res, next) => {
+  try {
+    const verifyPayload = req.params.token;
+
+    const verify = await verifyAccount(verifyPayload);
+
+    return res.status(verify.statusCode).json({ message: verify.message });
   } catch (error) {
     next(error);
   }
@@ -65,9 +77,42 @@ exports.Login = async (req, res, next) => {
   }
 };
 
+exports.UpdateUser = async (req, res, next) => {
+  try {
+    // const userId = req.user.id;
+    const { state, city, phone } = req.body;
+
+    const values = [state, city, phone, 1];
+    const createUser = await updateUser(values);
+
+    return res.status(createUser.statusCode).json({
+      message: createUser.message,
+      data: createUser.data,
+      statusCode: createUser.statusCode,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.GetUsersByRole = async (req, res, next) => {
   try {
-    const users = await getUsersByRole();
+    const role = req.params.role;
+    const users = await getUsersByRole(role);
+    return res.status(users.statusCode).json({
+      message: users.message,
+      data: users.data,
+      statusCode: users.statusCode,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.GetAllDoctorsByState = async (req, res, next) => {
+  try {
+    const state = req.params.state;
+    const users = await getAllDoctorsByState(state);
     return res.status(users.statusCode).json({
       message: users.message,
       data: users.data,

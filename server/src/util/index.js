@@ -6,7 +6,7 @@ exports.validateInput = (input, type, min, max) => {
   //Define regular expression for email and name validation
   const emailRegex =
     /^([a-z\d\.-]+)@([a-z\d-]+)\.([a-z]{2,12})(\.[a-z]{2,12})?$/;
-  const nameRegex = /^[a-zA-Z-]+$/;
+  const nameRegex = /^[a-zA-Z-\s]+$/;
 
   //validate input based on the specified type
 
