@@ -3,7 +3,9 @@ import { AddressContext } from '.';
 
 
 const AddressDisplay = () => {
-  const { address } = useContext(AddressContext);
+  const { address } = useContext(AddressContext
+    
+  );
 
   if (!address) {
     return null;
