@@ -13,7 +13,7 @@ export const SidebarWrapper = styled.div`
   top: 57.1px;
 
   font-size: 14px;
-  width: ${(props) => props.width};
+  width: ${(props) => props.$width};
   box-sizing: border-box;
   padding: 0px 24px;
   height: calc(100vh - 57.1px);

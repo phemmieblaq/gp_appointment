@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import styled from "styled-components";
 
 const ActiveNav = ({ index, text, path, defaultActive, status }) => {
@@ -8,12 +8,15 @@ const ActiveNav = ({ index, text, path, defaultActive, status }) => {
     // borderBottom: "4px solid #00A2D4",
     borderRadius: 0,
   };
+  const location = useLocation();
+  const isActive = location.pathname === path || (index === 0 && defaultActive);
+
 
   return (
     <Container>
       <NavLink
         to={path}
-        style={({ isActive }) => (isActive || (index === 0 && defaultActive) ? ActiveStyles : {})}
+        style={isActive ? ActiveStyles : {}}
       >
         <p>{text}</p>
 

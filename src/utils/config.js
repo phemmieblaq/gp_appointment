@@ -17,8 +17,15 @@ export const userSidebarItems = [
     },
     {
       id: 3,
+      title: "Explore",
+      icon: SettingsIcon,
+      path: "/dashboard/explore",
+    },
+    {
+      id: 4,
       title: "Settings",
       icon: SettingsIcon,
       path: "/dashboard/settings",
     },
+
 ]

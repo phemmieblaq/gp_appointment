@@ -13,31 +13,31 @@ const SidebarItem = ({ item, expanded, homePath, onClick }) => {
  // const { refreshNotifications } = useSelector((store) => store.UserDataReducer);
 
   //const notifications = useGetAllNotificationsQuery();
-
   const location = useLocation();
   const locationPath = location?.pathname;
 
-  let isActive = locationPath?.includes(item.path);
+  // Check if the path matches exactly
+  const isActive = locationPath === item.path;
 
-  let homePathActive = homePath && item.id === 1;
+
 
   
   return (
     <SidebarItemContainer>
       <Item>
         <div
-          style={isActive || homePathActive ? ActiveStyle : {}}
+          style={isActive ? ActiveStyle : {}}
           onClick={() => setCollapsed(!collapsed)}
         >
           <NavLink
             to={item.path}
             onMouseEnter={() => setIconHovered(item.id)}
             onMouseLeave={() => setIconHovered(0)}
-            style={({ isActive }) => (isActive || homePathActive ? { color: "#00a2d4" } : {})}
+            style={({ isActive }) => (isActive ? { color: "#00a2d4" } : {})}
             onClick={onClick}
           >
             <item.icon
-              filled={locationPath?.includes(item.path) || homePathActive}
+              filled={item.path}
               hover={iconHovered === item.id}
             />
             {expanded && item.title}
@@ -58,12 +58,12 @@ const SidebarItem = ({ item, expanded, homePath, onClick }) => {
                   to={each.path}
                   onMouseEnter={() => setIconHovered(item.id + each.id)}
                   onMouseLeave={() => setIconHovered(0)}
-                  style={({ isActive }) => (isActive || homePathActive ? { color: "#00a2d4" } : {})}
+                  style={({ isActive }) => (isActive ? { color: "#00a2d4" } : {})}
                   onClick={onClick}
                 >
                   <span>
                     <each.icon
-                      filled={locationPath?.includes(each.path) || homePathActive}
+                      filled={locationPath?.includes(each.path) }
                       hover={iconHovered === item.id + each.id}
                     />
                   </span>

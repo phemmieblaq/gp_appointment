@@ -34,7 +34,7 @@ const Login = () => {
 
   return (
     <>
-      <AuthLayout linkText="Sign Up" link="/register/user" question="Don't have an account?">
+      <AuthLayout >
       <Registration>
         <Form onSubmit={handleSubmit(submitForm)} >
           <HeadText

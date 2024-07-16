@@ -20,11 +20,11 @@ const AppointmentLayout  = () => {
             <LinkWrapper>
             <ActiveNav
             text='Upcoming appointment'
-            //path='upcoming-appointment'
+            path='/dashboard/appointments'
             />
             <ActiveNav
             text='Previous appointment'
-            //path='upcoming-appointment'
+            path='/dashboard/appointments/previous'
             />
            
             </LinkWrapper>
@@ -43,9 +43,9 @@ display: flex;
 flex-direction : column;
 gap: 16px;
 //border:1px solid red;
-width: 1000px;
-margin: 0 80px;
-padding: 24px 0px;
+width: 100%;
+
+padding: 24px 80px;
 flex-flow: column;
 
  
@@ -63,6 +63,8 @@ const Heading = styled.div`
 width: 100%;
 display: flex;
 justify-content: space-between;
+align-items: center;
+
 
 `
 const Title = styled.h4`

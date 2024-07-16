@@ -110,10 +110,10 @@ const InputWithLabel = ({
             max={maxNumber}
             height={maxHeight}
             value={value}
-            // onChange={onChange}
+            //onChange={onChange}
             onKeyDown={handleKeyDown}
             defaultValue={defaultValue}
-            {...register(name, { onChange: onChange })}
+            {...register(name)} onChange={onChange}
             {...rest}
           />
         ) : (

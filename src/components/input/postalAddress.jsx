@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 import axios from 'axios';
+import { useContext } from 'react';
+import { AddressContext } from '../../pages/contextApi';
 
 const PostalCodeAddress = ({ control, clearErrors, setError, errors }) => {
-  const [address, setAddress] = useState(null);
+    const { setAddress } = useContext(AddressContext);
 
   // Watch for changes in the postal code input
   const postcode = useWatch({ control, name: 'postcode' });
@@ -26,7 +28,7 @@ const PostalCodeAddress = ({ control, clearErrors, setError, errors }) => {
     };
 
     fetchAddress();
-  }, [postcode, setError, clearErrors]);
+  }, [postcode, setError, clearErrors, setAddress]);
 
   return (
     <div>
@@ -50,19 +52,7 @@ const PostalCodeAddress = ({ control, clearErrors, setError, errors }) => {
         {/* Add other input fields here */}
   
 
-      {address && (
-        <div>
-          <h2>Address Details</h2>
-          <p><strong>Postcode:</strong> {address.postcode}</p>
-          <p><strong>Country:</strong> {address.country}</p>
-          <p><strong>Region:</strong> {address.region}</p>
-          <p><strong>Admin District:</strong> {address.admin_district}</p>
-          <p><strong>Parish:</strong> {address.parish}</p>
-          <p><strong>Latitude:</strong> {address.latitude}</p>
-          <p><strong>Longitude:</strong> {address.longitude}</p>
-          <p><strong>OS Grid Reference:</strong> {address.os_grid_reference}</p>
-        </div>
-      )}
+      
     </div>
   );
 };

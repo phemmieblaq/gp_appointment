@@ -10,6 +10,10 @@ import Home from "../pages/user/dashboard";
 import BookingForm from "../pages/user/booking";
 import Personal from "../pages/user/Settings";
 import AppointmentLayout from "../pages/user/appointments/appointmentLayout";
+import UpcomingAppointment from "../pages/user/appointments";
+import PreviousAppointments from "../pages/user/appointments/previousAppointments";
+import Explore from "../pages/user/explore";
+import Test from "../pages/test";
 
 const AppRouter = () => {
 
@@ -21,7 +25,7 @@ return (
       <Routes>
       <Route path="/" element={ <Outlet />}>
       <Route path="booking" element={<BookingForm/>}/>
-      <Route path="test" element={<AppointmentLayout/>}/>
+      <Route path="test" element={<Test/>}/>
 
       <Route path="register" element={<UserRegistration />} />
       <Route path="signin" element={<Login />} />
@@ -39,8 +43,10 @@ return (
               <Route path="home" element={<Home/>} />
 
               <Route path="settings" element={<Personal/>} />
+              <Route path="explore" element={<Explore/>} />
               <Route path="appointments" element={<AppointmentLayout/>} >
-              <Route index element={[]} />
+              <Route index element={<UpcomingAppointment/>} />
+              <Route path="previous" element={<PreviousAppointments/>} />
               </Route>
 
             

@@ -9,15 +9,28 @@ import { InputWithLabel } from '../../../components/input';
 import DropDownInput from '../../../components/input/dropDownInput';
 import { useState } from 'react';
 import Textarea from '../../../components/input/TextArea';
+import Button from '../../../components/mainButton';
+import { userBookingSchema } from './schema';
 const BookingForm = () => {
   const [date, setDate] = useState("");
+  
 
   const handleDate = (e) => {
     const value = e.target.value;
     setDate(value);
-    //setValue("date", date, { shouldValidate: true });
+    setValue("date", date, { shouldValidate: true });
 
   };
+  const handleTime  = (value) => {
+    setValue("time", value, { shouldValidate: true });
+
+  };
+  const handleDepartment  = (value) => {
+    
+    setValue("department", value, { shouldValidate: true });
+
+  };
+
 
   const {
     handleSubmit,
@@ -26,7 +39,7 @@ const BookingForm = () => {
 
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(),
+    resolver: yupResolver(userBookingSchema),
   });
 
   const Departments = [
@@ -43,11 +56,25 @@ const BookingForm = () => {
     "Vaccination Clinics",
     "Rehabilitation Services"
 ]
+const appointmentSlots = [
+  "9:00 - 9:30",
+  "9:30 - 10:00",
+  "10:00 - 10:30",
+  "10:30 - 11:00",
+  "11:00 - 11:30",
+  "11:30 - 12:00",
+  "12:00 - 12:30",
+  "12:30 - 1:00",
+  "1:00 - 1:30",
+  "1:30 - 2:00",
+  "2:00 - 2:30",
+  "2:30 - 3:00",
+  "3:00 - 3:30",
+  "3:30 - 4:00",
+  "4:00 - 4:30",
+  "4:30 - 5:00"
+];
 
- const inputClass = {
-  "height": "200px",
-  border: "1px solid black"
- }
 
 
   const submitForm =(data)=>{
@@ -72,56 +99,69 @@ const BookingForm = () => {
           <p>Please provide the required information to book an appointment.</p>
 
           <Form onSubmit={handleSubmit(submitForm)} >
+
+
+          <Textarea
+    
+              minHeight="150px"
+              register={register}
+              label="Why are you booking an appointment?"
+               type="text"
+               name="reasons"
+               errorMessage={errors.reasons?.message}
+               />
+              
+          
           
         
-              <InputWithLabel
-               
-                label="Why are you booking an appointment?"
-                type="text"
-                name="reasons"
-               
-              />
+             
 
               <DropDownInput
-              label ="which department do you want to book an appointment with? "
-              OptionValues={Departments}
-              register={register}
+              label ="Department "
+              Options={Departments}
+              initialValue='select'
+              errorMessage={errors.department?.message}
+              
               name='department'
-              />
+              handleChange={handleDepartment}/>
+           
               <Textarea
-              inputClass={inputClass}
-              maxHeight="200px"
+                register={register}
+              
+              minHeight="180px"
                
                label="How do you feel? Give a description of your symptoms"
                type="text"
-               name="reasons"
+               name="descriptions"
+               errorMessage={errors.descriptions?.message}
               
              />
 
                 <InputWithLabel
+                
       
                 label='Date'
                 type='date'
                 name="date"
                 onChange={handleDate}       
-                errorMessage={errors.dateOfBirth?.message}/>
+                errorMessage={errors.date?.message}/>
 
               
-
+            <DropDownInput
+              label ="Time "
+              Options={appointmentSlots}
+              initialValue='select'
+              errorMessage={errors.time?.message}
+              
+              name='time'
+              handleChange={handleTime}/>
+           
+              
+              
 
 
            
-              {/* <InputWithLabel
-                placeholder="********"
-                label="Password"
-                type="password"
-                rightText
-                name="password"
-                 register={register}
-                 errorMessage={errors.password?.message}
-              /> */}
-              
-                
+             
 
 
                 
@@ -129,14 +169,14 @@ const BookingForm = () => {
                
          
       
-            {/* <Button
-              title='Sign in'
+             <Button
+              title='Book'
               //onClick={{}}
               type='submit'
               bg_color='#3C0FBD'
 />
            
-      */}
+      
         </Form>
 
         </Header>
@@ -200,5 +240,5 @@ text-align: left;
 color:#3C0FBD;
 `
 
-const Form = styled.div`
+const Form = styled.form`
 `

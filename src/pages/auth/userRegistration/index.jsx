@@ -19,16 +19,27 @@ import { userRegistrationSchema } from './schema'
 import  CalendarIcon from '../../../assets/svg/Calendar.svg'
 import DropDownInput from "../../../components/input/dropDownInput";
 import Button from "../../../components/mainButton";
+import { AddressContext, AddressProvider } from "../../contextApi";
+import PostalCodeAddress from "../../../components/input/postalAddress";
+import { useContext } from "react";
+import AddressDisplay from "../../contextApi/addressDisplay";
 const UserRegistration = () => {
 
   const [date, setDate] = useState("");
 
+
+
+  
   const {
     handleSubmit,
     register,
     setValue,
+    control, 
+    clearErrors, 
+    setError,
     formState: { errors },
   } = useForm({
+    
     resolver: yupResolver(userRegistrationSchema),
   });
 
@@ -41,6 +52,10 @@ const UserRegistration = () => {
   };
   const handleNumberChange = (value) => {
     setValue("phone", value, { shouldValidate: true });
+  };
+  const handleGenderChange = (value) => {
+    setValue("gender", value, { shouldValidate: true });
+    // console.log(value);
   };
 
   const genderOptions = [
@@ -55,15 +70,13 @@ const UserRegistration = () => {
    
   ];
   const submitForm =(data)=>{
-    console.log(data);}
+  
+    console.log(data)
+  }
 
 
   return (
-    <AuthLayout
-      register={true}
-      linkText="Sign In"
-      link="/login"
-      question="Already have an account?"
+    <AuthLayout  
     >
       <Registration>
         <Form onSubmit={handleSubmit(submitForm)} >
@@ -97,7 +110,7 @@ const UserRegistration = () => {
 
               </DoubleGridWrapper>
 
-              <InputWithLabel
+               <InputWithLabel
                 leftIcon={CalendarIcon}
                 label='Date of Birth'
                 type='date'
@@ -134,31 +147,55 @@ const UserRegistration = () => {
                 register={register}
                 errorMessage={errors.password?.message}
               />
-
               <DropDownInput
-              label ="Gender"
-              OptionValues={genderOptions}
-              register={register}
-              name='gender'
-              />
+                Options={genderOptions}
+               
+                
+                
+                 label ="Gender"
+                name='gender'
+                initialValue='select'
+               
+                errorMessage={errors.gender?.message}
+                handleChange={handleGenderChange}/> 
+
+
+              <AddressProvider>
+                    <div>
+                      
+                      <PostalCodeAddress
+                        control={control}
+                        clearErrors={clearErrors}
+                        setError={setError}
+                        errors={errors}
+                      />
+                       <AddressDisplay /> 
+                    </div>
+                    {/* <h2>{address.postcode}</h2> */}
+                  </AddressProvider>
+                 
+
+              
 
               <DoubleGridWrapper>
-                <InputWithLabel
+                {/* <InputWithLabel
               
                   label="county"
                   type="text"
                   name="first_name"
                    register={register}
                    errorMessage={errors.first_name?.message}
-                />
-                <InputWithLabel
-                  placeholder=""
-                  label="Last name"
-                  type="text"
-                  name="last_name"
-                  register={register}
-                  errorMessage={errors.last_name?.message}
-                />
+                /> */}
+               {/* <InputWithLabel
+              label="ID Upload"
+              type="file"
+              name="file"
+              register={register}
+              onChange={(e) => {
+                setValue("file", e.target.files[0]);
+              }}
+              errorMessage={errors.file?.message}
+            /> */}
 
 
               </DoubleGridWrapper>
@@ -166,7 +203,7 @@ const UserRegistration = () => {
 
               
             </div>
-            <TextsWithLink
+             <TextsWithLink
               text={[
                 {
                   text: "By creating an account , you agree to Crade's",
@@ -198,12 +235,11 @@ const UserRegistration = () => {
                 ]}
                 // $mobileResponsive
               />
-            </QuestionWrap> 
+            </QuestionWrap>  
               <Button
-              title='Create an account'
-              //onClick={{}}
-              type='submit'
-              bg_color='#3C0FBD'
+              title="Create an account"
+              type="submit"
+              bg_color="#3C0FBD"
 />
           </Body>
         </Form>

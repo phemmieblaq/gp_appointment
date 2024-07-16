@@ -8,7 +8,7 @@ const AuthLayout = ({ children, hideLeftAt, linkText, link, question }) => {
   return (
     <Layout>
       <LayoutLeft>
-        <LayoutLeftContent hideLeftAt={hideLeftAt}>
+        <LayoutLeftContent>
           <LeftDetails>
             <Logo />
             <CreateText>
@@ -28,7 +28,7 @@ const AuthLayout = ({ children, hideLeftAt, linkText, link, question }) => {
           </LeftDetails>
         </LayoutLeftContent>
       </LayoutLeft>
-      <LayoutRight hideLeftAt={hideLeftAt}>
+      <LayoutRight >
         <LogoContainer>
           <img
             src={logo}
@@ -61,9 +61,7 @@ const LayoutLeft = styled.div`
   width: 50%;
   height: 100vh;
   display: none;
-  @media screen and (max-width: ${(props) => "1000px" || props.hideLeftAt}) {
-    display: none;
-  }
+  
 `;
 
 const LayoutLeftContent = styled.div`

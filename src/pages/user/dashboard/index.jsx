@@ -41,7 +41,7 @@ const Home = () => {
     Medical center's near you
         </Heading>
         <MappingSection>
-            {cardDetails?.map((card, index) => (
+            {cardDetails?.slice(0,3).map((card, index) => (
                 <MedicalCard
                 key={index}
                 hospitalName={card.hospitalName}

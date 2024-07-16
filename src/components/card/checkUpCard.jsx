@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import blueCalendar from '../../assets/svg/blueCalendar.svg'
 import clock from '../../assets/svg/clock.svg'
 import map from '../../assets/images/map.jpeg'
-import MapContainer from '../../container/map'
 
 
-const CheckUpCard = ({date ='05/12/2024', time='12:00 PM' }) => {
+
+const CheckUpCard = ({reason='General check up',address="16 Adijat crop street, Hearthrow London, United Kingdom",date ='05/12/2024', time='12:00 PM' }) => {
   return (
     <div>
         <Wrapper>
@@ -15,11 +15,11 @@ const CheckUpCard = ({date ='05/12/2024', time='12:00 PM' }) => {
       
     
         <Heading>
-        General check up
+        {reason}
 
         </Heading>
         <Address>
-        16 Adijat crop street, Hearthrow London, United Kingdom
+        {address}
         </Address>
         <DateWrapper>
             <TimeWrapper>

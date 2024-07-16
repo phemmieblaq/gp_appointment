@@ -2,12 +2,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import { AddressProvider } from './pages/contextApi';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+      <AddressProvider>
+      <App />
+      </AddressProvider>
+   
   </React.StrictMode>
 );
 

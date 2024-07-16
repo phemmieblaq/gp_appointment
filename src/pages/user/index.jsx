@@ -52,7 +52,7 @@ const BodyLeft = styled.div`
 const BodyRight = styled.div`
   display: flex;
   flex-flow: column;
-  width: calc(100% - ${({ SidebarWidth }) => SidebarWidth});
+  width:100%;
 
   @media screen and (max-width: 700px) {
     width: 100%;

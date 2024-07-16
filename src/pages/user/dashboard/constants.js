@@ -20,4 +20,53 @@ export const cardDetails = [
     carTime: "10 mins",
     walkDistance: "115km",
   },
+  {
+    id:3,
+    hospitalName: "St Thomas Hospital",
+    address: "Westminster Bridge Rd, London England",
+    carTime: "10 mins",
+    walkDistance: "115km",
+  },{
+    id:4,
+    hospitalName: "St Thomas Hospital",
+    address: "Westminster Bridge Rd, London England",
+    carTime: "10 mins",
+    walkDistance: "115km",
+  },{
+    id:5,
+    hospitalName: "St Thomas Hospital",
+    address: "Westminster Bridge Rd, London England",
+    carTime: "10 mins",
+    walkDistance: "115km",
+  },{
+    id:6,
+    hospitalName: "St Thomas Hospital",
+    address: "Westminster Bridge Rd, London England",
+    carTime: "10 mins",
+    walkDistance: "115km",
+  },{
+    id:7,
+    hospitalName: "St Thomas Hospital",
+    address: "Westminster Bridge Rd, London England",
+    carTime: "10 mins",
+    walkDistance: "115km",
+  },{
+    id:8,
+    hospitalName: "St Thomas Hospital",
+    address: "Westminster Bridge Rd, London England",
+    carTime: "10 mins",
+    walkDistance: "115km",
+  },{
+    id:9,
+    hospitalName: "St Thomas Hospital",
+    address: "Westminster Bridge Rd, London England",
+    carTime: "10 mins",
+    walkDistance: "115km",
+  },{
+    id:10,
+    hospitalName: "St Thomas Hospital",
+    address: "Westminster Bridge Rd, London England",
+    carTime: "10 mins",
+    walkDistance: "115km",
+  },
 ];

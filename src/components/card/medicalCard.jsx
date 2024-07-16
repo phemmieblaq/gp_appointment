@@ -52,13 +52,15 @@ const MedicalCard = ({hospitalName='St Thomas Hospital',
 
 export default MedicalCard
 const Wrapper = styled.div`
-max-width: 368px;
+max-width: 300px;
+
+
 
 display: flex;
 flex-direction: column;
 justify-content: center;
 border-radius: 8px
-border: 1px solid #E7E6E9;
+border: 1px solid red;
 box-shadow: 0px 2px 4px -1px #0000001A;
 
 
@@ -82,6 +84,7 @@ margin-bottom: 8px;
 
 const LowerContainer = styled.div`
 width: 100%;
+
 padding:24px;`
 
 const Address = styled.p`

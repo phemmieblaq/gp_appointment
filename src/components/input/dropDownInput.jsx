@@ -1,72 +1,73 @@
-import React, { useState, useEffect, useRef } from "react";
-import { InputWrapper, Wrapper, Label, ErrMsg, Top, Select } from "./styled";
+import React, { useState } from "react";
+import { HiChevronDown, HiChevronUp } from "react-icons/hi";
+import './style.css';
 
 const DropDownInput = ({
-  label,
-  labelStyle,
-  containerStyle,
-  edit,
-  error,
+  Options,
   errorMessage,
-  OptionValues,
-  onSelectedChange = () => {},
-  container,
-  placeholder,
-  secureTextEntry,
-  type,
-  name,
-  register,
-  ...rest
+  label,
+  initialValue,
+  handleChange, // Accept handleChange as a prop
 }) => {
-  const handleChange = (e) => {
-    let selectedValue = e.target.value;
-    onSelectedChange(selectedValue);
-  };
-  let options = OptionValues.map((data) => (
-    <option key={data} value={data} style={{ color: "red" }}>
-      {data}
-    </option>
-  ));
-  const [active, setActive] = useState(false);
-  const inputRef = useRef(null);
+  const [selectedValue, setSelectedValue] = useState(initialValue);
+  const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    if (active) {
-      inputRef.current.focus();
+  const handleOpenDropdown = () => {
+    setOpen(!open);
+  };
+
+  const handleSelect = (selected) => {
+    setSelectedValue(selected);
+    setOpen(false);
+    if (handleChange) {
+      handleChange(selected); // Call the handleChange function when a selection is made
     }
-  }, [active]);
-  const handleBorder = (bool) => {
-    setActive(bool);
   };
 
-  
   return (
-    <Wrapper
-      key="DropDownInput"
-      className={containerStyle}
-      
-    >
-      <Top>
-        {label && <Label className={labelStyle}>{label}</Label>}
+    <div className={`custom-div `} key="DropDownInput">
+      <div className="Top">
+        {label && <label className='Label'>{label}</label>}
+        {errorMessage ? <div className='ErrMsg'>{errorMessage}</div> : null}
+      </div>
 
-        {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
-      </Top>
-
-      <InputWrapper
-      border={errorMessage ? "1px solid red" : active ? "1px solid #00A2D4" : "1px solid #ececec"}
-     
-      ref={inputRef}
-      onFocus={() => handleBorder(true)}
-      onBlur={() => handleBorder(false)}
-      >
-        <Select onChange={handleChange} {...register(name)}>
-          <options style={{ backgroundColor: "red" }} value="">
-            Select
-          </options>
-          {options}
-        </Select>
-      </InputWrapper>
-    </Wrapper>
+      <div className={`InputWrapper ${errorMessage ? 'error' : ''}`}>
+        <div
+          onClick={handleOpenDropdown}
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            height: "100%",
+          }}>
+          <div className="showList">
+            {selectedValue}
+          </div>
+          <div className='ShowListIcon'>
+            {open ? (
+              <HiChevronUp size={24} color="#4E5152" />
+            ) : (
+              <HiChevronDown size={24} color="#4E5152" />
+            )}
+          </div>
+        </div>
+        {open && (
+          <>
+            <div className='InvisibleBackDrop' onClick={() => setOpen(false)} />
+            <div className='DropDown'>
+              <div className="ListItems">
+                {Options.map((option, index) => (
+                  <div className='ListItem' key={index} onClick={() => handleSelect(option)}>
+                    {option}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
   );
 };
 

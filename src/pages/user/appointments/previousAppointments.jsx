@@ -3,7 +3,7 @@ import { appointment } from './constant'
 import CheckUpCard from '../../../components/card/checkUpCard'
 import styled from 'styled-components'
 
-const UpcomingAppointment = () => {
+const PreviousAppointments = () => {
   return (
     <Wrapper>
       {appointment?.map((el, index) => (
@@ -18,8 +18,7 @@ const UpcomingAppointment = () => {
   )
 }
 
-export default UpcomingAppointment
-
+export default PreviousAppointments
 const Wrapper = styled.div`
 
 display: flex;

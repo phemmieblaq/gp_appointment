@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   InputWrapper,
   Wrapper,
-  Input,
+
   Label,
   Iconwrapper,
   RightIconwrapper,
@@ -19,7 +19,7 @@ const Textarea = ({
   label,
   labelStyle,
   containerStyle,
-  maxHeight,
+  minHeight,
   edit,
   error,
   errorMessage,
@@ -89,7 +89,7 @@ const Textarea = ({
 
       <InputWrapper
         border={errorMessage ? "1px solid red" : active ? "1px solid #00A2D4" : "1px solid #ececec"}
-        height={maxHeight}
+        min-height={minHeight}
         className={inputClass}
         ref={inputRef}
         onFocus={() => handleBorder(true)}
@@ -109,7 +109,7 @@ const Textarea = ({
             id={inputId}
             disabled={disable}
             max={maxNumber}
-            height={maxHeight}
+            min-height={minHeight}
             value={value}
             // onChange={onChange}
             onKeyDown={handleKeyDown}

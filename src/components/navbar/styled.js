@@ -79,13 +79,13 @@ export const SearchIconWrapper = styled.div`
 
 export const SearchBarWrapper = styled.div`
   max-width: 563px;
-  border: 1px solid #edf1f7;
+  border: 1px solid #CCC4C4;
   border-radius: 20px;
   background: #fafafa;
   display: flex;
   flex: 1;
   padding-inline: 17px;
-  height: 40px;
+  height: 44px;
 
   font-size: 12px;
   line-height: 18px;
