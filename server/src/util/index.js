@@ -21,3 +21,38 @@ exports.validateInput = (input, type, min, max) => {
       return false;
   }
 };
+
+
+
+exports.checkIfFieldsAreEmpty = (fields, reqBody) => {
+  for (const field of fields) {
+    if (!reqBody[field] || reqBody[field].trim() === '') {
+      return `${field} should not be empty`;
+    }
+  }
+  return null;
+};
+
+// utils/nhsNumberGenerator.js
+
+// utils/nhsNumberGenerator.js
+
+ // utils/nhsNumberGenerator.js
+
+ // utils/nhsNumberGenerator.js
+
+exports. generateNHSNumber = () => {
+  const getRandomDigit = () => Math.floor(Math.random() * 9);
+  let nhsNumber = '';
+  for (let i = 0; i < 10; i++) {
+    nhsNumber += getRandomDigit();
+  }
+  return nhsNumber;
+};
+
+
+
+
+
+
+
