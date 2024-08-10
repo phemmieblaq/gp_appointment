@@ -1,11 +1,15 @@
 const express = require('express');
 const userController = require('../controller/userController')
+<<<<<<< HEAD
 const specialityController = require('../controller/specialityController')
 const schedulesController = require('../controller/schedulesController')
 const patientController = require('../controller/patientController')
 const appointmentController = require('../controller/appointmentController')
 const doctorController = require('../controller/doctorController')
 
+=======
+const blogController = require('../controller/blogController')
+>>>>>>> 4dc7301 (server added)
 const authenticateToken = require('../middleware/authMiddleware')
  
 
@@ -15,7 +19,11 @@ const router = express.Router();
 
 
 router.post ('/auth/signup', userController.addUser)
+<<<<<<< HEAD
 
+=======
+router.get('/user/blogs',authenticateToken, blogController.getUserBlogs);
+>>>>>>> 4dc7301 (server added)
 router.get('/user/:email', userController.getUserByEmail);
 
 //router.get('/user/:id', userController.getUserById)
@@ -31,6 +39,7 @@ router.delete('/delete-user', userController.deleteUserByEmail)
 
 
 
+<<<<<<< HEAD
 router.post('/speciality', specialityController.addSpecialty)
 router.get('/speciality', specialityController.getAllSpecialties)
 router.get('/doctors/by-specialty/:specialty', doctorController.getDoctorsBySpecialty);
@@ -55,6 +64,23 @@ router.post('/book/:scheduleId', appointmentController.bookAppointment);
 
 
 
+=======
+
+
+
+router.post('/blog', authenticateToken, blogController.postBlog);
+router.get('/user/blogs',authenticateToken, blogController.getUserBlogs);
+router.put('/blog/:id', authenticateToken, blogController.updateBlog);
+router.delete('/blog/:id', authenticateToken, blogController.deleteBlog);
+router.get('/blog/:userId/:id', authenticateToken, blogController.getSingleUserBlog);
+router.get('/blogs', blogController.getAllBlogs);
+
+router.post ('/store-blog', authenticateToken, blogController.storeSingleBlog);
+
+router.get ('/store-blog', authenticateToken, blogController.getStoreBlog);
+
+router.get ('/clear-blog', authenticateToken, blogController.clearBlog);
+>>>>>>> 4dc7301 (server added)
 
 
 
