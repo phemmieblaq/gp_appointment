@@ -9,7 +9,7 @@ import {
   QuestionWrap,
   Registration,
 } from "./styles";
-import { InputWithLabel, TagInputWithSearch } from "../../../components/input";
+import { InputWithLabel } from "../../../components/input";
 import { HeadText, TextsWithLink } from "../../../components/texts";
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
@@ -19,13 +19,20 @@ import { userRegistrationSchema } from './schema'
 import  CalendarIcon from '../../../assets/svg/Calendar.svg'
 import DropDownInput from "../../../components/input/dropDownInput";
 import Button from "../../../components/mainButton";
-import { AddressContext, AddressProvider } from "../../contextApi";
-import PostalCodeAddress from "../../../components/input/postalAddress";
-import { useContext } from "react";
-import AddressDisplay from "../../contextApi/addressDisplay";
+import { registerUser } from "../../../services/api";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserInfo } from "../../../redux/Slices";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+
 const UserRegistration = () => {
 
   const [date, setDate] = useState("");
+
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+ 
 
 
 
@@ -34,9 +41,8 @@ const UserRegistration = () => {
     handleSubmit,
     register,
     setValue,
-    control, 
-    clearErrors, 
-    setError,
+    
+ 
     formState: { errors },
   } = useForm({
     
@@ -69,11 +75,38 @@ const UserRegistration = () => {
     "Prefer not to say",
    
   ];
-  const submitForm =(data)=>{
-  
-    console.log(data)
-  }
 
+ 
+
+  
+  const submitForm =async (data)=>{
+    const userData = {
+      "first_name": data?.first_name,
+      "last_name": data?.last_name,
+      "email": data?.email,
+      "phone_number": data?.phone,
+      "role": "patient",
+      "gender": data?.gender,
+      "password": data?.password,
+      "date_of_birth": data?.dateOfBirth,
+  };
+   
+  try {
+    const response = await registerUser(userData);
+    dispatch(setUserInfo(response.data.data)); // Save user info to Redux store
+    toast.success(data.message);
+      navigate('/signin');
+    console.log('User registered successfully:', response.data);
+  } catch (error) {
+    console.log('Error registering user:', error);
+  }
+     console.log(data);
+
+  
+   
+  }
+  // const userInfo = useSelector((state) => state.user.userInfo);
+  // console.log(userInfo);
 
   return (
     <AuthLayout  
@@ -160,45 +193,10 @@ const UserRegistration = () => {
                 handleChange={handleGenderChange}/> 
 
 
-              <AddressProvider>
-                    <div>
-                      
-                      <PostalCodeAddress
-                        control={control}
-                        clearErrors={clearErrors}
-                        setError={setError}
-                        errors={errors}
-                      />
-                       <AddressDisplay /> 
-                    </div>
-                    {/* <h2>{address.postcode}</h2> */}
-                  </AddressProvider>
-                 
+              
 
               
 
-              <DoubleGridWrapper>
-                {/* <InputWithLabel
-              
-                  label="county"
-                  type="text"
-                  name="first_name"
-                   register={register}
-                   errorMessage={errors.first_name?.message}
-                /> */}
-               {/* <InputWithLabel
-              label="ID Upload"
-              type="file"
-              name="file"
-              register={register}
-              onChange={(e) => {
-                setValue("file", e.target.files[0]);
-              }}
-              errorMessage={errors.file?.message}
-            /> */}
-
-
-              </DoubleGridWrapper>
              
 
               
@@ -254,7 +252,7 @@ const UserRegistration = () => {
       <Bottom>
         
      
-       
+ 
       </Bottom>
     </AuthLayout>
   );

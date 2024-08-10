@@ -5,8 +5,13 @@ import CheckUpCard from '../../../components/card/checkUpCard'
 import BlogCard from '../../../components/card/blogCard'
 import { cardDetails } from './constants'
 import MedicalCard from '../../../components/card/medicalCard'
+import { useSelector } from 'react-redux'
 
 const Home = () => {
+
+  const loginInfo = useSelector((state) => state.user.loginInfo);
+  console.log("login", loginInfo);
+
   return (
     <div>
         <Container>

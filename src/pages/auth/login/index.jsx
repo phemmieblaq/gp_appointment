@@ -11,12 +11,16 @@ import { InputWithLabel } from "../../../components/input";
 
 import  AuthLayout  from "../../../container/authLayout"
 import { HeadText, TextsWithLink } from "../../../components/texts";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
 import Button from "../../../components/mainButton";
 import { userLoginSchema } from "./schema";
+import { loginUser } from "../../../services/api";
+import toast from "react-hot-toast";
+import { setLoginInfo } from "../../../redux/Slices";
 const Login = () => {
+  const navigate = useNavigate();
 
   const {
     handleSubmit,
@@ -28,10 +32,30 @@ const Login = () => {
   });
 
 
-  const submitForm =(data)=>{
-    console.log(data);}
-  
+  const submitForm =async (data)=>{
+    const userData = {
+     
+      "email": data?.email,
+      "password": data?.password,
+      
+  };
+   
+  try {
+    const response = await loginUser(userData);
+    console.log(response)
 
+    toast.success("check your email for 6-digit OTP");
+      navigate('/otp');
+    //console.log('User registered successfully:', response.data);
+  } catch (error) {
+    toast.error(error.message);
+    console.log('Error logging in user:', error);
+  }
+     console.log(data);
+
+  
+   
+  }
   return (
     <>
       <AuthLayout >

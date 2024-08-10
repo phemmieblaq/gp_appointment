@@ -14,6 +14,7 @@ import UpcomingAppointment from "../pages/user/appointments";
 import PreviousAppointments from "../pages/user/appointments/previousAppointments";
 import Explore from "../pages/user/explore";
 import Test from "../pages/test";
+import OTP from "../pages/user/otp";
 
 const AppRouter = () => {
 
@@ -28,8 +29,10 @@ return (
       <Route path="test" element={<Test/>}/>
 
       <Route path="register" element={<UserRegistration />} />
+      <Route path="staff/register" element={<UserRegistration />} />
       <Route path="signin" element={<Login />} />
-      {/* User dashboard routes */}
+      <Route path="otp" element={<OTP/>} />
+    
       <Route
               path="dashboard"
               element={

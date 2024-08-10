@@ -11,8 +11,60 @@ import { useState } from 'react';
 import Textarea from '../../../components/input/TextArea';
 import Button from '../../../components/mainButton';
 import { userBookingSchema } from './schema';
+import { getAllSpecialties, getDoctorsBySpecialty } from '../../../services/api';
+import { useEffect } from 'react';
 const BookingForm = () => {
   const [date, setDate] = useState("");
+  const [specialties, setSpecialties] = useState([]);
+  const [selectedSpecialty, setSelectedSpecialty] = useState('');
+  const [doctors, setDoctors] = useState([]);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+
+  
+
+
+
+  useEffect(() => {
+    // Fetch all specialties on component mount
+    const fetchSpecialties = async () => {
+      try {
+        const data = await getAllSpecialties();
+        setSpecialties(data);
+      } catch (error) {
+        console.error('Error fetching specialties:', error);
+      }
+    };
+
+    fetchSpecialties();
+  }, []);
+
+  useEffect(() => {
+    // Fetch doctors when a specialty is selected
+    if (selectedSpecialty) {
+      const fetchDoctors = async () => {
+        try {
+          const data = await getDoctorsBySpecialty(selectedSpecialty);
+          setDoctors(data?.data);
+        } catch (error) {
+          console.error('Error fetching doctors:', error);
+        }
+      };
+
+      fetchDoctors();
+    }
+  }, [selectedSpecialty]);
+
+
+  
+
+
+
+
+  const specialityNames = specialties?.data?.data.map(specialty => specialty.specialty_name); 
+  //console.log(specialityNames)
+  const doctorOptions = doctors?.map(doc => ({ id: doc.doctor_id, name: doc.doctor_name }));
+
+  console.log(selectedDoctor)
   
 
   const handleDate = (e) => {
@@ -28,7 +80,14 @@ const BookingForm = () => {
   const handleDepartment  = (value) => {
     
     setValue("department", value, { shouldValidate: true });
+    setSelectedSpecialty(value);
 
+  };
+
+  const handleDoctor = (selected) => {
+    setSelectedDoctor(selected);
+  
+    console.log('Selected doctor:', selected);
   };
 
 
@@ -42,20 +101,7 @@ const BookingForm = () => {
     resolver: yupResolver(userBookingSchema),
   });
 
-  const Departments = [
-    "General Practice (GP)",
-    "Accident & Emergency (A&E)",
-    "Outpatients Department",
-    "Mental Health Services",
-    "Maternity Services",
-    "Dental Services",
-    "Community Health Services",
-    "Sexual Health Clinics",
-    "Optometry Services",
-    "Specialist Clinics",
-    "Vaccination Clinics",
-    "Rehabilitation Services"
-]
+  
 const appointmentSlots = [
   "9:00 - 9:30",
   "9:30 - 10:00",
@@ -108,7 +154,7 @@ const appointmentSlots = [
               label="Why are you booking an appointment?"
                type="text"
                name="reasons"
-               errorMessage={errors.reasons?.message}
+               errorMessage={errors?.reasons?.message}
                />
               
           
@@ -118,12 +164,24 @@ const appointmentSlots = [
 
               <DropDownInput
               label ="Department "
-              Options={Departments}
+              Options={specialityNames}
               initialValue='select'
               errorMessage={errors.department?.message}
               
               name='department'
               handleChange={handleDepartment}/>
+
+ {selectedSpecialty &&
+              <DropDownInput
+              label="Doctors"
+              Options={doctorOptions}
+              initialValue="select"
+              errorMessage={errors.department?.message}
+              name="doctor"
+              handleChange={handleDoctor}
+              useObjectOptions={true} // Pass true to indicate Options contains objects
+            />
+            } 
            
               <Textarea
                 register={register}

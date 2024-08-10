@@ -4,6 +4,11 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useDropzone } from 'react-dropzone';
+import styled from 'styled-components';
+import { ErrMsg, Input, InputWrapper, Label, Top, Wrapper } from '../input/styled';
+import { useRef } from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const validationSchema = yup.object().shape({
   file: yup
@@ -17,10 +22,24 @@ const validationSchema = yup.object().shape({
     }),
 });
 
-const FileUpload = () => {
-  const { control, handleSubmit, setValue, formState: { errors } } = useForm({
-    resolver: yupResolver(validationSchema),
-  });
+const FileUpload = ({label, labelStyle, errorMessage ,setValue,control,errors}) => {
+
+  const [active, setActive] = useState(false);
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (active) {
+      inputRef.current.focus();
+    }
+  }, [active]);
+  const handleBorder = (bool) => {
+    setActive(bool);
+  };
+
+  // const { control, handleSubmit, setValue, formState: { errors } } = useForm({
+  //   resolver: yupResolver(validationSchema),
+  // });
 
   const onDrop = (acceptedFiles) => {
     if (acceptedFiles && acceptedFiles.length > 0) {
@@ -33,16 +52,26 @@ const FileUpload = () => {
     multiple: false,
   });
 
-  const onSubmit = (data) => {
-    alert(JSON.stringify(data, null, 2));
-  };
+  
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div {...getRootProps({ className: 'dropzone' })}>
-        <input {...getInputProps()} />
+    <Wrapper>
+      <Top>
+        {label && <Label className={labelStyle}>{label}</Label>}
+
+        {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}
+     
+      </Top>
+   
+      <InputWrapper {...getRootProps({ className: 'dropzone' })}
+      border={errorMessage ? "1px solid red" : active ? "1px solid #00A2D4" : "1px solid #ececec"}
+
+      ref={inputRef}
+      onFocus={() => handleBorder(true)}
+      onBlur={() => handleBorder(false)}>
+        <Input {...getInputProps()} />
         <p>Drag 'n' drop some files here, or click to select files</p>
-      </div>
+      </InputWrapper>
       {errors.file && <div className="error">{errors.file.message}</div>}
       <Controller
         name="file"
@@ -57,10 +86,11 @@ const FileUpload = () => {
           </div>
         )}
       />
-      <button type="submit">Submit</button>
-    </form>
+     
+      </Wrapper>
+  
   );
 };
 
 export default FileUpload;
- 
+

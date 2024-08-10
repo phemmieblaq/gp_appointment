@@ -8,6 +8,7 @@ const DropDownInput = ({
   label,
   initialValue,
   handleChange, // Accept handleChange as a prop
+  useObjectOptions = false, // New prop to determine if Options is an array of objects
 }) => {
   const [selectedValue, setSelectedValue] = useState(initialValue);
   const [open, setOpen] = useState(false);
@@ -17,7 +18,7 @@ const DropDownInput = ({
   };
 
   const handleSelect = (selected) => {
-    setSelectedValue(selected);
+    setSelectedValue(useObjectOptions ? selected.name : selected);
     setOpen(false);
     if (handleChange) {
       handleChange(selected); // Call the handleChange function when a selection is made
@@ -59,7 +60,7 @@ const DropDownInput = ({
               <div className="ListItems">
                 {Options.map((option, index) => (
                   <div className='ListItem' key={index} onClick={() => handleSelect(option)}>
-                    {option}
+                    {useObjectOptions ? option.name : option}
                   </div>
                 ))}
               </div>

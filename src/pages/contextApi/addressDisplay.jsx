@@ -1,29 +1,43 @@
 import React, { useContext } from 'react';
 import { AddressContext } from '.';
+import { InputWithLabel } from '../../components/input';
+import { DoubleGridWrapper } from '../auth/userRegistration/styles';
 
 
 const AddressDisplay = () => {
-  const { address } = useContext(AddressContext
-    
-  );
+  const { address } = useContext(AddressContext);
+  //console.log(address);
 
   if (!address) {
     return null;
   }
 
-  console.log('AddressDisplay received address:', address);
+  //console.log('AddressDisplay received address:', address);
 
   return (
     <div>
-      <h2>Address Details</h2>
-      <p><strong>Postcode:</strong> {address.postcode}</p>
-      <p><strong>Country:</strong> {address.country}</p>
-      <p><strong>Region:</strong> {address.region}</p>
-      <p><strong>Admin District:</strong> {address.admin_district}</p>
-      <p><strong>Parish:</strong> {address.parish}</p>
-      <p><strong>Latitude:</strong> {address.latitude}</p>
-      <p><strong>Longitude:</strong> {address.longitude}</p>
-      <p><strong>OS Grid Reference:</strong> {address.os_grid_reference}</p>
+       <DoubleGridWrapper>
+   
+            <InputWithLabel
+                
+                label="County"
+                value={address.admin_county}
+                type = "text"
+                disable={true}
+                name="county"
+              />
+
+              <InputWithLabel
+                
+                label="District"
+                value={address.admin_district}
+                type = "text"
+                disable={true}
+                name='adminDistrict'
+              />
+
+</DoubleGridWrapper>
+
     </div>
   );
 };

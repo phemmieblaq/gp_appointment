@@ -1,11 +1,42 @@
+
 import React, { useState, useEffect } from 'react';
 import { Controller, useWatch } from 'react-hook-form';
 import axios from 'axios';
 import { useContext } from 'react';
 import { AddressContext } from '../../pages/contextApi';
+import {
+  InputWrapper,
+  Wrapper,
+  Input,
+  Label,
+  
+  ErrMsg,
+  Top,
+  
+  
+} from "./styled";
+import { useRef } from 'react';
 
-const PostalCodeAddress = ({ control, clearErrors, setError, errors }) => {
+
+const PostalCodeAddress = ({ control, clearErrors, setError, errors,
+  label,
+  name,
+
+  disable,
+  labelStyle,
+}) => {
     const { setAddress } = useContext(AddressContext);
+    const [active, setActive] = useState(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (active) {
+      inputRef.current.focus();
+    }
+  }, [active]);
+  const handleBorder = (bool) => {
+    setActive(bool);
+  };
 
   // Watch for changes in the postal code input
   const postcode = useWatch({ control, name: 'postcode' });
@@ -31,29 +62,35 @@ const PostalCodeAddress = ({ control, clearErrors, setError, errors }) => {
   }, [postcode, setError, clearErrors, setAddress]);
 
   return (
-    <div>
+    <Wrapper>
   
-        <div>
-          <label>Postal Code:</label>
-          <Controller
-            name="postcode"
-            control={control}
-            defaultValue=""
-            render={({ field }) => (
-              <input
-                {...field}
+  <Top>
+        {label && <Label className={labelStyle}>{label}</Label>}
+
+         {errors.postcode ? <ErrMsg>{errors?.postcode?.message}</ErrMsg> : null}
+
+      </Top>
+
+  <InputWrapper
+border={errors?.postcode?.message ? "1px solid red" : active ? "1px solid #00A2D4" : "1px solid #ececec"}
+
+
+ref={inputRef}
+onFocus={() => handleBorder(true)}
+onBlur={() => handleBorder(false)}
+disable={disable}
+>
+    
+              <Input
+                {...control.register(name)}
                 type="text"
                 placeholder="Enter UK postal code"
               />
-            )}
-          />
-          {errors.postcode && <p className="error">{errors.postcode.message}</p>}
-        </div>
-        {/* Add other input fields here */}
-  
-
-      
-    </div>
+          
+         
+         </InputWrapper>
+         </Wrapper>
+    
   );
 };
 

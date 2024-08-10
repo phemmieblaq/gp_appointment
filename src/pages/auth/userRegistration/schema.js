@@ -1,25 +1,22 @@
 import * as yup from "yup";
-//import { parsePhoneNumberFromString } from "libphonenumber-js";
-const FILE_SIZE = 1024 * 1024; // 1 MB
-const SUPPORTED_FORMATS = ['image/jpg', 'image/jpeg', 'image/png', 'application/pdf'];
+import { sanitizeInput } from "../../../utils/config";
+
 
 export const userRegistrationSchema = yup.object().shape({
-  first_name: yup.string().required("Enter your first name"),
-  last_name: yup.string().required("Enter your last name"),
+  first_name: yup.string().required("Enter your first name")
+  .test('is-sanitized', 'first name contains potentially malicious content', value => {
+    const sanitizedValue = sanitizeInput(value);
+    return sanitizedValue === value;}),
+  last_name: yup.string().required("Enter your last name")
+  .test('is-sanitized', 'last name contains potentially malicious content', value => {
+    const sanitizedValue = sanitizeInput(value);
+    return sanitizedValue === value;}),
    dateOfBirth: yup.string().required ("kindly pick your date of birth"),
    email: yup.string().email("Enter a valid email address").required("Enter your email"),
    phone: yup.string().min(10, "Invalid phone number").required("Enter your phone number"),
   gender: yup.string().required("pick your gender"),
-  // file: yup.mixed()
-  //   .required("A file is required")
-  //   .test("fileSize", "File size is too large", value => {
-  //     return value && value.size <= FILE_SIZE;
-  //   })
-  //   .test("fileFormat", "Unsupported file format", value => {
-  //     return value && SUPPORTED_FORMATS.includes(value.type);
-  //   }),
 
- 
+  
   password: yup
     .string()
     .min(6)
