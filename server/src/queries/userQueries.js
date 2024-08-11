@@ -1,20 +1,15 @@
-<<<<<<< HEAD
-const addUser = 'INSERT INTO Users (first_name, last_name, phone_number,email, password,gender,date_of_birth,role) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *';
+const addUser =
+  "INSERT INTO Users (first_name, last_name, phone_number,email, password,gender,date_of_birth,role) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *";
 
-const getUserByEmail = 'SELECT * FROM Users WHERE email = $1';
-const checkEmailExists = 'SELECT 1 FROM Users WHERE email = $1';
-const checkUsernameExists = 'SELECT 1 FROM Users WHERE username = $1';
-const deleteUserByEmail = 'DELETE FROM Users WHERE email = $1';
-const getUserById = 'SELECT * FROM Users WHERE user_id = $1';
-
-
+const getUserByEmail = "SELECT * FROM Users WHERE email = $1";
+const checkEmailExists = "SELECT 1 FROM Users WHERE email = $1";
+const checkUsernameExists = "SELECT 1 FROM Users WHERE username = $1";
+const deleteUserByEmail = "DELETE FROM Users WHERE email = $1";
+const getUserById = "SELECT * FROM Users WHERE user_id = $1";
 
 const addSpecialty = `INSERT INTO specialties (specialty_name, description) VALUES ($1, $2) RETURNING *`;
 const getAllSpecialties = `SELECT * FROM specialties`;
 const getSpecialtyByName = `SELECT * FROM specialties WHERE specialty_name = $1`;
-
-
-
 
 const getDoctorsBySpecialty = `
   SELECT 
@@ -35,12 +30,7 @@ const getDoctorsBySpecialty = `
     doctor_name;
 `;
 
-
-
-
 const addDoctor = `INSERT INTO doctors (user_id, specialty_id) VALUES ($1, $2) RETURNING *`;
-
-
 
 const getSchedule = `
   SELECT * FROM Schedules
@@ -108,7 +98,6 @@ const bookAppointment = `
   RETURNING *;
 `;
 
-
 const getPatientRecordsByPatientId = `
   SELECT pr.*, u.first_name, u.last_name, u.email, u.gender, u.date_of_birth, u.phone_number
   FROM PatientRecords pr
@@ -128,13 +117,6 @@ const addPatientRecord = `
     patient_id, description, prescription, allergies, family_medical_history, past_medical_history, current_medication
   ) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *
 `;
-
-
-
-
-
-
-
 
 module.exports = {
   addUser,
@@ -163,46 +145,7 @@ module.exports = {
   markUnavailable,
   getAvailableTimeSlots,
 
-
   getPatientRecordsByPatientId,
   getPatientRecordDetails,
-  addPatientRecord
+  addPatientRecord,
 };
-=======
-const addUser='Insert into users (username  , email, password_hash) values ($1, $2, $3) RETURNING * ';
-const getUserByEmail='Select * from users where email=$1';
-const checkEmailExists = 'SELECT 1 FROM users WHERE email = $1';
-const checkUsernameExists = 'SELECT 1 FROM users WHERE username = $1';
-const deleteUserByEmail='Delete from users where email=$1';
-
-const getUserById='Select * from users where id=$1';
-
-
-const createPasswordResetToken = 'INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1, $2, $3) RETURNING *';
-const getPasswordResetToken = 'SELECT * FROM password_reset_tokens WHERE token = $1 AND expires_at > NOW()';
-const deleteUserPasswordResetTokens = 'DELETE FROM password_reset_tokens WHERE user_id = $1';
-const updateUserPassword = 'UPDATE users SET password_hash = $1 WHERE id = $2';
-
-
-const addNewBlog='INSERT INTO blog_posts (user_id, title, content) VALUES ($1, $2, $3) RETURNING *';
-const updateBlog = 'UPDATE blog_posts SET title = $1, content = $2 WHERE id = $3 AND user_id = $4 RETURNING *';
-const deleteBlog = 'DELETE FROM blog_posts WHERE id = $1 AND user_id = $2 RETURNING *;';
-const getAllBlogs = 'SELECT * FROM blog.blog_posts';
-
-module.exports={
-  addUser
-  ,getUserByEmail,
-  checkEmailExists,
-  checkUsernameExists,
-  getUserById,
-  createPasswordResetToken,
-  getPasswordResetToken,
-  deleteUserPasswordResetTokens,
-  updateUserPassword,
-  addNewBlog,
-  updateBlog,
-  deleteBlog,
-  getAllBlogs,
-  deleteUserByEmail
-};
->>>>>>> 4dc7301 (server added)

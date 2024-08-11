@@ -5,13 +5,9 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const { transporter } = require("../common/nodeMailer");
 const generateOTP = require("../common/generateOTP");
-<<<<<<< HEAD
 const { checkIfFieldsAreEmpty, generateNHSNumber } = require("../util");
 
-
-
 require("dotenv").config();
-
 
 const addUser = async (req, res) => {
   const {
@@ -19,23 +15,19 @@ const addUser = async (req, res) => {
     last_name,
     gender,
     date_of_birth,
-    
-
-  
-  
     phone_number,
     email,
     password,
     role,
-    specialty_name 
+    specialty_name,
   } = req.body;
   const requiredFields = [
-    'first_name',
-    'last_name',
-    'phone_number',
-    'email',
-    'password',
-    'role'
+    "first_name",
+    "last_name",
+    "phone_number",
+    "email",
+    "password",
+    "role",
   ];
 
   // Check if any required fields are empty
@@ -43,49 +35,31 @@ const addUser = async (req, res) => {
   if (emptyFieldError) {
     return res.status(400).json({ error: emptyFieldError });
   }
-  
 
   // Check if any required fields are empty
-  
 
   try {
     await pool.query("SET search_path TO public");
     // Check if user email is already in the database
-    const emailExistsResult = await pool.query(queries.checkEmailExists, [email]);
- 
-=======
-
-require("dotenv").config();
-
-const addUser = async (req, res) => {
-  const { username, email, password_hash } = req.body;
-
-  try {
-    await pool.query("SET search_path TO blog, public");
-    // Check if user email is already in the database
     const emailExistsResult = await pool.query(queries.checkEmailExists, [
       email,
     ]);
-    console.log(emailExistsResult.rows);
-
-    const checkUsernameExists = await pool.query(queries.checkUsernameExists, [
-      username,
-    ]);
-    //console.log(checkUsernameExists.rows);
->>>>>>> 4dc7301 (server added)
 
     if (emailExistsResult.rows.length) {
       return res.status(400).json({ error: "Email already in use" });
     }
-<<<<<<< HEAD
 
     let specialtyResult;
-    if (role === 'doctor') {
+    if (role === "doctor") {
       if (!specialty_name) {
-        return res.status(400).json({ error: "Specialty name is required for doctors" });
+        return res
+          .status(400)
+          .json({ error: "Specialty name is required for doctors" });
       }
 
-      specialtyResult = await pool.query(queries.getSpecialtyByName, [specialty_name]);
+      specialtyResult = await pool.query(queries.getSpecialtyByName, [
+        specialty_name,
+      ]);
       if (specialtyResult.rows.length === 0) {
         return res.status(400).json({ error: "Specialty not found" });
       }
@@ -110,35 +84,17 @@ const addUser = async (req, res) => {
       gender,
       date_of_birth,
 
-      role,     // Make sure to include the role in the query
+      role, // Make sure to include the role in the query
     ]);
 
-
-    if (role === 'doctor') {
+    if (role === "doctor") {
       const specialtyId = specialtyResult.rows[0].specialty_id;
-      await pool.query(queries.addDoctor, [saveUser.rows[0].user_id, specialtyId]);
+      await pool.query(queries.addDoctor, [
+        saveUser.rows[0].user_id,
+        specialtyId,
+      ]);
     }
 
-
-
-=======
-    if (checkUsernameExists.rows.length) {
-      return res.status(400).json({ error: "username already in use" });
-    }
-
-    if (!password_hash) {
-      return res.status(400).json({ error: "Password is required" });
-    }
-    // Hash the password
-    const cryptedPassword = await hasher(password_hash, 12);
-
-    // Insert the new user into the database
-    const saveUser = await pool.query(queries.addUser, [
-      username,
-      email,
-      cryptedPassword,
-    ]);
->>>>>>> 4dc7301 (server added)
     console.log(saveUser);
     res
       .status(201)
@@ -159,11 +115,7 @@ const getUserById = async (req, res) => {
   const id = parseInt(req.params.id);
 
   try {
-<<<<<<< HEAD
     await pool.query("SET search_path TO public");
-=======
-    await pool.query("SET search_path TO blog, public");
->>>>>>> 4dc7301 (server added)
     const getUser = await pool.query(queries.getUserById, [id]);
 
     // Check if any user was found
@@ -206,11 +158,7 @@ const token = async (req, res) => {
 };
 
 const logoutUser = async (req, res) => {
-<<<<<<< HEAD
   await pool.query("SET search_path TO public");
-=======
-  await pool.query("SET search_path TO blog, public");
->>>>>>> 4dc7301 (server added)
 
   // Access the token from the cookies
   const token = req.cookies["accessToken"];
@@ -226,34 +174,17 @@ const logoutUser = async (req, res) => {
 };
 
 const loginUser = async (req, res) => {
-<<<<<<< HEAD
   const { email, password } = req.body;
   let userFound = false;
 
   try {
     await pool.query("SET search_path TO public");
-=======
-  const { email, password_hash } = req.body;
-  let userFound = false;
-
-  try {
-    await pool.query("SET search_path TO blog, public");
->>>>>>> 4dc7301 (server added)
     const userResult = await pool.query(queries.getUserByEmail, [email]);
 
     if (userResult.rows.length > 0) {
       const user = userResult.rows[0];
-<<<<<<< HEAD
       console.log(user);
-      const passwordMatch = await matchChecker(
-        password,
-        user.password
-=======
-      const passwordMatch = await matchChecker(
-        password_hash,
-        user.password_hash
->>>>>>> 4dc7301 (server added)
-      );
+      const passwordMatch = await matchChecker(password, user.password);
 
       if (passwordMatch) {
         // User found and password is correct
@@ -289,16 +220,8 @@ const loginUser = async (req, res) => {
         req.session.otp = otp;
         console.log(otp);
         req.session.user = {
-<<<<<<< HEAD
           id: user.user_id,
           email: user.email,
-
-=======
-          id: user.id,
-          email: user.email,
-
-          username: user.username,
->>>>>>> 4dc7301 (server added)
         };
       }
     }
@@ -326,11 +249,7 @@ const loginUser = async (req, res) => {
 const verifyOTP = async (req, res) => {
   const { otp } = req.body;
   console.log("Received OTP:", req.body.otp);
-<<<<<<< HEAD
   console.log("Expected OTP:", req.session.otp);
-=======
-  console.log("Expected OTP:", req.session.otp);  
->>>>>>> 4dc7301 (server added)
   const otpExpired = new Date() > new Date(req.session.otp.expiresAt);
 
   if (req.session.otp.otp === otp && !otpExpired) {
@@ -350,7 +269,7 @@ const verifyOTP = async (req, res) => {
     // Removed 'secure: true' for local development on HTTP
     res.cookie("accessToken", accessToken, {
       httpOnly: true,
-      secure: false, // Set to true if served over HTTPS
+      secure: false, // Set to true if served over HTTPS`
       maxAge: 3600000, // 1 hour  //60,000 milliseconds = 1 minute
     });
     res.cookie("refreshToken", refreshToken, {
@@ -360,28 +279,22 @@ const verifyOTP = async (req, res) => {
     });
 
     const userId = req.session.user.id;
-<<<<<<< HEAD
+    console.log(userId, "id phone");
     const email = req.session.user.email;
- 
-=======
-    const username = req.session.user.username;
->>>>>>> 4dc7301 (server added)
 
     // Clear the session data
     req.session.otp = null;
     req.session.user = null;
+    console.log(req?.session);
+    const getUser = await pool.query(queries.getUserById, [userId]);
 
     res.status(200).json({
       message: "Login successful",
       accessToken,
       refreshToken,
       userId,
-<<<<<<< HEAD
       email,
-    
-=======
-      username,
->>>>>>> 4dc7301 (server added)
+      role: getUser.rows[0].role,
     });
   } else {
     res.status(401).json({ error: "Invalid OTP" });
@@ -394,11 +307,7 @@ const forgotPassword = async (req, res) => {
   req.session.user = { email };
 
   try {
-<<<<<<< HEAD
     await pool.query("SET search_path TO public");
-=======
-    await pool.query("SET search_path TO blog, public");
->>>>>>> 4dc7301 (server added)
     const userResult = await pool.query(queries.getUserByEmail, [email]);
     if (userResult.rows.length === 0) {
       return res.status(404).json({ error: "User not found" });
@@ -448,11 +357,7 @@ const verifyPasswordOtp = async (req, res) => {
 
   const { otp } = req.body;
   try {
-<<<<<<< HEAD
     await pool.query("SET search_path TO public");
-=======
-    await pool.query("SET search_path TO blog, public");
->>>>>>> 4dc7301 (server added)
     const userResult = await pool.query(queries.getUserByEmail, [email]);
     if (userResult.rows.length === 0) {
       return res.status(404).json({ error: "User not found" });
@@ -485,21 +390,13 @@ const passwordReset = async (req, res) => {
   const { newPassword } = req.body;
   const email = req.session.user.email;
 
-<<<<<<< HEAD
   await pool.query("SET search_path TO public");
-=======
-  await pool.query("SET search_path TO blog, public");
->>>>>>> 4dc7301 (server added)
 
   // Hash the new password
   const hashedPassword = await hasher(newPassword, 12);
 
   // Update the user's password in the database
-<<<<<<< HEAD
   await pool.query("UPDATE users SET password = $1 WHERE email = $2", [
-=======
-  await pool.query("UPDATE users SET password_hash = $1 WHERE email = $2", [
->>>>>>> 4dc7301 (server added)
     hashedPassword,
     email,
   ]);
@@ -512,11 +409,7 @@ const passwordReset = async (req, res) => {
 };
 
 const getUserByEmail = async (req, res) => {
-<<<<<<< HEAD
   await pool.query("SET search_path TO public");
-=======
-  await pool.query("SET search_path TO blog, public");
->>>>>>> 4dc7301 (server added)
   try {
     const email = req.params.email; // Get the email from the request parameters
 
@@ -541,11 +434,7 @@ const getUserByEmail = async (req, res) => {
   }
 };
 const deleteUserByEmail = async (req, res) => {
-<<<<<<< HEAD
   await pool.query("SET search_path TO public");
-=======
-  await pool.query("SET search_path TO blog, public");
->>>>>>> 4dc7301 (server added)
   try {
     const email = req.body.email; // Get the email from the request body
     console.log(email);
