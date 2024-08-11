@@ -1,10 +1,14 @@
-import React, { Suspense,} from "react";
+import React, { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
-import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
 import UserRegistration from "../pages/auth/userRegistration";
 import Login from "../pages/auth/login";
 import UserDashboardLayout from "../pages/user";
-
 
 import Home from "../pages/user/dashboard";
 import BookingForm from "../pages/user/booking";
@@ -15,51 +19,37 @@ import PreviousAppointments from "../pages/user/appointments/previousAppointment
 import Explore from "../pages/user/explore";
 import Test from "../pages/test";
 import OTP from "../pages/user/otp";
+import Schedule from "../pages/user/schedule";
 
 const AppRouter = () => {
+  return (
+    <Suspense>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Outlet />}>
+            <Route path="booking" element={<BookingForm />} />
+            <Route path="test" element={<Test />} />
 
-return (
+            <Route path="register" element={<UserRegistration />} />
+            <Route path="staff/register" element={<UserRegistration />} />
+            <Route path="signin" element={<Login />} />
+            <Route path="otp" element={<OTP />} />
 
+            <Route path="dashboard" element={<UserDashboardLayout />}>
+              <Route index element={<Home />} />
+              <Route path="home" element={<Home />} />
 
-  <Suspense >
-    <Router> 
-      <Routes>
-      <Route path="/" element={ <Outlet />}>
-      <Route path="booking" element={<BookingForm/>}/>
-      <Route path="test" element={<Test/>}/>
-
-      <Route path="register" element={<UserRegistration />} />
-      <Route path="staff/register" element={<UserRegistration />} />
-      <Route path="signin" element={<Login />} />
-      <Route path="otp" element={<OTP/>} />
-    
-      <Route
-              path="dashboard"
-              element={
-               
-                  
-                    <UserDashboardLayout />
-                 
-              }
-            >
-              <Route index element={<Home/>} />
-              <Route path="home" element={<Home/>} />
-
-              <Route path="settings" element={<Personal/>} />
-              <Route path="explore" element={<Explore/>} />
-              <Route path="appointments" element={<AppointmentLayout/>} >
-              <Route index element={<UpcomingAppointment/>} />
-              <Route path="previous" element={<PreviousAppointments/>} />
+              <Route path="settings" element={<Personal />} />
+              <Route path="schedule" element={<Schedule />} />
+              <Route path="explore" element={<Explore />} />
+              <Route path="appointments" element={<AppointmentLayout />}>
+                <Route index element={<UpcomingAppointment />} />
+                <Route path="previous" element={<PreviousAppointments />} />
               </Route>
-
-            
             </Route>
-        
-    
-                  
-                  </Route>     
-      </Routes>
-       <Toaster
+          </Route>
+        </Routes>
+        <Toaster
           position="top-right"
           toastOptions={{
             className: "",
@@ -103,11 +93,9 @@ return (
             },
           }}
         />
-        </Router>
+      </Router>
     </Suspense>
-)
-     
+  );
 };
-
 
 export default AppRouter;

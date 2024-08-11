@@ -11,12 +11,12 @@ import {
 } from "./styles";
 import { InputWithLabel } from "../../../components/input";
 import { HeadText, TextsWithLink } from "../../../components/texts";
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm } from 'react-hook-form'
-import  AuthLayout  from "../../../container/authLayout"
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import AuthLayout from "../../../container/authLayout";
 import NumberInput from "../../../components/input/phoneNumberInput";
-import { userRegistrationSchema } from './schema'
-import  CalendarIcon from '../../../assets/svg/Calendar.svg'
+import { userRegistrationSchema } from "./schema";
+import CalendarIcon from "../../../assets/svg/Calendar.svg";
 import DropDownInput from "../../../components/input/dropDownInput";
 import Button from "../../../components/mainButton";
 import { registerUser } from "../../../services/api";
@@ -26,35 +26,25 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 const UserRegistration = () => {
-
   const [date, setDate] = useState("");
 
-
   const dispatch = useDispatch();
-  const navigate = useNavigate()
- 
+  const navigate = useNavigate();
 
-
-
-  
   const {
     handleSubmit,
     register,
     setValue,
-    
- 
+
     formState: { errors },
   } = useForm({
-    
     resolver: yupResolver(userRegistrationSchema),
   });
-
 
   const handleDate = (e) => {
     const value = e.target.value;
     setDate(value);
     setValue("dateOfBirth", date, { shouldValidate: true });
-
   };
   const handleNumberChange = (value) => {
     setValue("phone", value, { shouldValidate: true });
@@ -73,52 +63,43 @@ const UserRegistration = () => {
     "Transgender",
     "Intersex",
     "Prefer not to say",
-   
   ];
 
- 
-
-  
-  const submitForm =async (data)=>{
+  const submitForm = async (data) => {
     const userData = {
-      "first_name": data?.first_name,
-      "last_name": data?.last_name,
-      "email": data?.email,
-      "phone_number": data?.phone,
-      "role": "patient",
-      "gender": data?.gender,
-      "password": data?.password,
-      "date_of_birth": data?.dateOfBirth,
-  };
-   
-  try {
-    const response = await registerUser(userData);
-    dispatch(setUserInfo(response.data.data)); // Save user info to Redux store
-    toast.success(data.message);
-      navigate('/signin');
-    console.log('User registered successfully:', response.data);
-  } catch (error) {
-    console.log('Error registering user:', error);
-  }
-     console.log(data);
+      first_name: data?.first_name,
+      last_name: data?.last_name,
+      email: data?.email,
+      phone_number: data?.phone,
+      role: "patient",
+      gender: data?.gender,
+      password: data?.password,
+      date_of_birth: data?.dateOfBirth,
+    };
 
-  
-   
-  }
+    try {
+      const response = await registerUser(userData);
+      dispatch(setUserInfo(response.data.data)); // Save user info to Redux store
+      toast.success(data.message);
+      navigate("/signin");
+      console.log("User registered successfully:", response.data);
+    } catch (error) {
+      console.log("Error registering user:", error);
+    }
+    console.log(data);
+  };
   // const userInfo = useSelector((state) => state.user.userInfo);
   // console.log(userInfo);
 
   return (
-    <AuthLayout  
-    >
+    <AuthLayout>
       <Registration>
-        <Form onSubmit={handleSubmit(submitForm)} >
+        <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
             title="Create an account"
             body="Please provide information required to create an account"
             align="flex-start"
             margintop="8px"
-            
           />
           <Body>
             <div>
@@ -128,8 +109,8 @@ const UserRegistration = () => {
                   label="First name"
                   type="text"
                   name="first_name"
-                   register={register}
-                   errorMessage={errors.first_name?.message}
+                  register={register}
+                  errorMessage={errors.first_name?.message}
                 />
                 <InputWithLabel
                   placeholder="Enter your last name"
@@ -139,21 +120,17 @@ const UserRegistration = () => {
                   register={register}
                   errorMessage={errors.last_name?.message}
                 />
-
-
               </DoubleGridWrapper>
 
-               <InputWithLabel
+              <InputWithLabel
                 leftIcon={CalendarIcon}
-                label='Date of Birth'
-                type='date'
+                label="Date of Birth"
+                type="date"
                 name="dateOfBirth"
-                onChange={handleDate}       
-                errorMessage={errors.dateOfBirth?.message}/>
+                onChange={handleDate}
+                errorMessage={errors.dateOfBirth?.message}
+              />
 
-              
-
-              
               <InputWithLabel
                 placeholder="Enter your email address"
                 label="Email"
@@ -182,26 +159,14 @@ const UserRegistration = () => {
               />
               <DropDownInput
                 Options={genderOptions}
-               
-                
-                
-                 label ="Gender"
-                name='gender'
-                initialValue='select'
-               
+                label="Gender"
+                name="gender"
+                initialValue="select"
                 errorMessage={errors.gender?.message}
-                handleChange={handleGenderChange}/> 
-
-
-              
-
-              
-
-             
-
-              
+                handleChange={handleGenderChange}
+              />
             </div>
-             <TextsWithLink
+            <TextsWithLink
               text={[
                 {
                   text: "By creating an account , you agree to Crade's",
@@ -209,7 +174,11 @@ const UserRegistration = () => {
                     text: "Privacy Policy",
                     to: "",
                   },
-                  action: () => window.open("https://policy.sidebrief.com/privacy", "_blank"),
+                  action: () =>
+                    window.open(
+                      "https://policy.sidebrief.com/privacy",
+                      "_blank"
+                    ),
                 },
                 {
                   text: "&",
@@ -217,12 +186,12 @@ const UserRegistration = () => {
                     text: "Terms of Use.",
                     to: "",
                   },
-                  action: () => window.open("https://policy.sidebrief.com/terms", "_blank"),
+                  action: () =>
+                    window.open("https://policy.sidebrief.com/terms", "_blank"),
                 },
               ]}
             />
 
-            
             <QuestionWrap>
               <TextsWithLink
                 text={[
@@ -233,12 +202,12 @@ const UserRegistration = () => {
                 ]}
                 // $mobileResponsive
               />
-            </QuestionWrap>  
-              <Button
+            </QuestionWrap>
+            <Button
               title="Create an account"
               type="submit"
               bg_color="#3C0FBD"
-/>
+            />
           </Body>
         </Form>
         {/* <AppFeedback subProject="User registration" /> */}
@@ -249,11 +218,7 @@ const UserRegistration = () => {
         <OrText> OR </OrText>
         <hr />
       </OrWrapper>
-      <Bottom>
-        
-     
- 
-      </Bottom>
+      <Bottom></Bottom>
     </AuthLayout>
   );
 };

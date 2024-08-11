@@ -5,28 +5,32 @@ import Sidebar from "../../components/sidebar";
 import { Outlet } from "react-router-dom";
 
 //import MobileNavbar from "../../components/navbar/MobileNavbar";
-import { userSidebarItems } from "../../utils/config";
+import { doctorSidebarItems, userSidebarItems } from "../../utils/config";
+import { useSelector } from "react-redux";
 
 const UserDashboardLayout = () => {
+  const loginInfo = useSelector((state) => state.user.loginInfo);
+  console.log("login", loginInfo);
 
-  
-
-
-  
   return (
     <Dashboard>
       <Navbar
         dashboard
         imgStyles={{ maxWidth: "100px" }}
         style={{ padding: "12px 24px" }}
-        
       />
 
       <Body>
         <BodyLeft>
-          <Sidebar items={userSidebarItems} />
+          <Sidebar
+            items={
+              loginInfo?.role === "doctor"
+                ? doctorSidebarItems
+                : userSidebarItems
+            }
+          />
         </BodyLeft>
-        <BodyRight >
+        <BodyRight>
           <Outlet />
         </BodyRight>
       </Body>
@@ -46,13 +50,12 @@ const Body = styled.div`
   display: flex;
   flex-flow: row nowrap;
 `;
-const BodyLeft = styled.div`
-`;
+const BodyLeft = styled.div``;
 
 const BodyRight = styled.div`
   display: flex;
   flex-flow: column;
-  width:100%;
+  width: 100%;
 
   @media screen and (max-width: 700px) {
     width: 100%;

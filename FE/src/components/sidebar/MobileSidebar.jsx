@@ -15,15 +15,16 @@ import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { MdClear } from "react-icons/md";
 import { handleLogout as logout } from "utils/globalFunctions";
 import SidebarItem from "./SidebarItem";
+import { logoutUser } from "../../services/api";
 
 const MobileSidebar = ({ items, toggleDrawer }) => {
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    toggleDrawer(false);
-    logout(navigate);
+  const handleLogout = async () => {
+    const response = await logoutUser();
+    navigate("/signin");
   };
 
   const handleNavigate = (path) => {
@@ -31,7 +32,8 @@ const MobileSidebar = ({ items, toggleDrawer }) => {
     navigate(path);
   };
 
-  let homePath = pathname === "/staff-dashboard" || pathname === "/dashboard" ? true : false;
+  let homePath =
+    pathname === "/staff-dashboard" || pathname === "/dashboard" ? true : false;
 
   return (
     <MobileSidebarWrapper>
