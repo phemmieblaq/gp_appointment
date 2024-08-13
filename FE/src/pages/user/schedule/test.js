@@ -4,12 +4,21 @@ import moment from "moment";
 import Dialog from "@mui/material/Dialog";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+// import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { calendarEvents } from "./events";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+// import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import TimePicker from "rc-time-picker";
+// import AdapterDateFns from "@mui/lab/AdapterDateFns";
+// import LocalizationProvider from "@mui/lab/LocalizationProvider";
+// import TimePicker from "@mui/lab/TimePicker";
+import DialogTitle from "@mui/material/DialogTitle";
+import "react-time-picker/dist/TimePicker.css";
+import "react-clock/dist/Clock.css";
 momentLocalizer(moment);
 
 const ScheduleCalendar = () => {
@@ -18,9 +27,11 @@ const ScheduleCalendar = () => {
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [desc, setDesc] = useState("");
+  const [valuer, setValue] = React.useState(null);
   const [openSlot, setOpenSlot] = useState(false);
   const [openEvent, setOpenEvent] = useState(false);
   const [clickedEvent, setClickedEvent] = useState({});
+  const [value, onChange] = useState("10:00");
 
   const handleClose = () => {
     setOpenEvent(false);
@@ -123,43 +134,121 @@ const ScheduleCalendar = () => {
   //   }
 
   return (
-    <LocalizationProvider dateAdapter={AdapterMoment}>
-      <div id="Calendar">
-        {/* react-big-calendar library utilized to render calendar */}
-        <Calendar
-          events={events}
-          step={60}
-          localizer={localizer}
-          views={["month", "week", "day", "agenda"]}
-          selectable={true}
-          timeslots={2}
-          defaultDate={new Date(2016, 3, 1)}
-          popup={false}
-          onSelectEvent={handleEventSelected}
-          onSelectSlot={handleSlotSelected}
+    <>
+      {/* <div id="Calendar"> */}
+      {/* react-big-calendar library utilized to render calendar */}
+      <Calendar
+        events={calendarEvents}
+        step={60}
+        localizer={localizer}
+        views={allViews}
+        selectable={true}
+        timeslots={2}
+        defaultDate={new Date(2016, 3, 1)}
+        popup={false}
+        onShowMore={(calendarEvents, date) =>
+          this.setState({ showModal: true, calendarEvents })
+        }
+        onSelectEvent={handleEventSelected}
+        onSelectSlot={handleSlotSelected}
+      />
+
+      {/* Material-ui Modal for booking new appointment */}
+      <Dialog
+        title={`Book an appointment on ${moment(start).format("MMMM Do YYYY")}`}
+        actions={appointmentActions}
+        modal={false}
+        open={openSlot}
+        onClose={handleClose}
+      >
+        <DialogTitle>{"Create schedule"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Provide your availability time for your patients to book
+            appointment.
+          </DialogContentText>
+        </DialogContent>
+        <TextField
+          floatingLabelText="Title"
+          variant="filled"
+          label="Title"
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <br />
+        <TextField
+          floatingLabelText="Description"
+          variant="filled"
+          label="Description"
+          onChange={(e) => setDesc(e.target.value)}
+        />
+        Start:
+        <TimePicker onChange={onChange} disableClock={true} value={value} />
+        End:
+        <TimePicker onChange={onChange} disableClock={true} value={value} />
+        {/* <TimePicker
+            format="ampm"
+            floatingLabelText="Start Time"
+            minutesStep={5}
+            value={start}
+            onChange={handleStartTime}
+          />
+          <TimePicker
+            format="ampm"
+            floatingLabelText="End Time"
+            minutesStep={5}
+            value={end}
+            onChange={handleEndTime}
+          /> */}
+      </Dialog>
+
+      {/* Material-ui Modal for Existing Event */}
+      <Dialog
+        title={`View/Edit Appointment of ${moment(start).format(
+          "MMMM Do YYYY"
+        )}`}
+        actions={eventActions}
+        modal={false}
+        open={openEvent}
+        onClose={handleClose}
+      >
+        <DialogTitle>{"Schedule"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Schedule Details for the Event
+          </DialogContentText>
+        </DialogContent>
+
+        {/* <TextField
+          defaultValue={title}
+          floatingLabelText="Title"
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <br />
+        <TextField
+          floatingLabelText="Description"
+          multiLine={true}
+          defaultValue={desc}
+          onChange={(e) => setDesc(e.target.value)}
+        /> */}
+
+        <TextField
+          floatingLabelText="Title"
+          variant="filled"
+          defaultValue={title}
+          label="Title"
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <br />
+        <TextField
+          floatingLabelText="Description"
+          multiLine={true}
+          defaultValue={desc}
+          variant="filled"
+          label="Description"
+          onChange={(e) => setDesc(e.target.value)}
         />
 
-        {/* Material-ui Modal for booking new appointment */}
-        <Dialog
-          title={`Book an appointment on ${moment(start).format(
-            "MMMM Do YYYY"
-          )}`}
-          actions={appointmentActions}
-          modal={false}
-          open={openSlot}
-          onRequestClose={handleClose}
-        >
-          <TextField
-            floatingLabelText="Title"
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <br />
-          <TextField
-            floatingLabelText="Description"
-            onChange={(e) => setDesc(e.target.value)}
-          />
-
-          <TimePicker
+        {/* <TimePicker
             format="ampm"
             floatingLabelText="Start Time"
             minutesStep={5}
@@ -172,49 +261,10 @@ const ScheduleCalendar = () => {
             minutesStep={5}
             value={end}
             onChange={handleEndTime}
-          />
-        </Dialog>
-
-        {/* Material-ui Modal for Existing Event */}
-        <Dialog
-          title={`View/Edit Appointment of ${moment(start).format(
-            "MMMM Do YYYY"
-          )}`}
-          actions={eventActions}
-          modal={false}
-          open={openEvent}
-          onRequestClose={handleClose}
-        >
-          <TextField
-            defaultValue={title}
-            floatingLabelText="Title"
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <br />
-          <TextField
-            floatingLabelText="Description"
-            multiLine={true}
-            defaultValue={desc}
-            onChange={(e) => setDesc(e.target.value)}
-          />
-
-          <TimePicker
-            format="ampm"
-            floatingLabelText="Start Time"
-            minutesStep={5}
-            value={start}
-            onChange={handleStartTime}
-          />
-          <TimePicker
-            format="ampm"
-            floatingLabelText="End Time"
-            minutesStep={5}
-            value={end}
-            onChange={handleEndTime}
-          />
-        </Dialog>
-      </div>
-    </LocalizationProvider>
+          /> */}
+      </Dialog>
+      {/* </div> */}
+    </>
   );
 };
 

@@ -108,7 +108,7 @@ const getScheduleByDoctor = async (doctorId) => {
 };
 
 const addTimeSlot = async (timeSlotData) => {
-  await validateSession();
+  // await validateSession();
   return await api.post("/timeslot", timeSlotData);
 };
 

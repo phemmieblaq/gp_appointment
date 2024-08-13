@@ -8,7 +8,6 @@ import {
   Heading,
   FlexCard,
   HospitalSection,
-  MappingSection,
   SpecialtyWrapper,
   SpecialtyCard,
   SpelName,
@@ -17,39 +16,36 @@ import {
 import SessionCard from "../../../components/card/sessionCard";
 import CheckUpCard from "../../../components/card/checkUpCard";
 import BlogCard from "../../../components/card/blogCard";
-import { cardDetails } from "./constants";
-import MedicalCard from "../../../components/card/medicalCard";
 import { useSelector } from "react-redux";
-import {
-  getAllSpecialties,
-  getDoctorsBySpecialty,
-} from "../../../services/api";
-import { Navigate, useNavigate } from "react-router-dom";
+import { getDoctorsBySpecialty } from "../../../services/api";
+import { useNavigate, useParams } from "react-router-dom";
 
-const Home = () => {
+const Doctors = () => {
   const loginInfo = useSelector((state) => state.user.loginInfo);
   console.log("login", loginInfo);
   const [spectialty, setSpecialty] = useState([]);
-  const [doctors, setDoctors] = useState([]);
+  const [doctorList, setDoctors] = useState([]);
   const navigate = useNavigate();
+  const { name } = useParams();
 
-  const handleFetchSpecialty = async () => {
+  console.log("ddd", name);
+  const handleFetch = async () => {
     try {
-      const response = await getAllSpecialties();
-      console.log(response);
-      setSpecialty(response?.data?.data);
+      const response = await getDoctorsBySpecialty(name);
+      console.log(response, "hhhhh");
+      setDoctors(response?.data);
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
-    handleFetchSpecialty();
+    handleFetch();
   }, []);
 
-  const handleClick = async (name) => {
-    navigate(`/dashboard/doctors/${name}`);
+  const handleClick = async (email) => {
+    navigate(`/dashboard/doctor-details/${name}/${email}`);
   };
-  console.log(doctors);
   return (
     <div>
       <Container>
@@ -75,25 +71,12 @@ const Home = () => {
             </SecondWrapper>
           </GridContainer>
           <HospitalSection>
-            {/* <Heading>Medical center's near you</Heading>
-            <MappingSection>
-              {cardDetails?.slice(0, 3).map((card, index) => (
-                <MedicalCard
-                  key={index}
-                  hospitalName={card.hospitalName}
-                  address={card.address}
-                  carTime={card.carTime}
-                  walkDistance={card.walkDistance}
-                />
-              ))}
-            </MappingSection> */}
             <SpecialtyWrapper>
-              {spectialty?.map((data, index) => (
-                <SpecialtyCard
-                  onClick={() => handleClick(data?.specialty_name)}
-                >
-                  <SpelName>{data?.specialty_name}</SpelName>
-                  <SpelDescription>{data?.description}</SpelDescription>
+              {doctorList?.map((doctor, index) => (
+                <SpecialtyCard onClick={() => handleClick(doctor?.email)}>
+                  <SpelName>{name}</SpelName>
+                  <SpelDescription>{doctor?.doctor_name}</SpelDescription>
+                  <SpelDescription>{doctor?.email}</SpelDescription>
                 </SpecialtyCard>
               ))}
             </SpecialtyWrapper>
@@ -103,4 +86,4 @@ const Home = () => {
     </div>
   );
 };
-export default Home;
+export default Doctors;

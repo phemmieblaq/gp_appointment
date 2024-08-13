@@ -116,13 +116,13 @@ export const getCsrfToken = async () => {
 
 export async function getSession() {
   try {
-    const response = await axios.get("http://localhost:6000/protected-route");
-
+    const response = await axios.get("http://localhost:5500/protected-route");
+    console.log(response, "ada favour");
     if (!response.ok) {
       toast(
         "Session timed out. redirecting to login lage ",
         "error",
-        "http://localhost:6000/login"
+        "http://localhost:5500/signin"
       );
     }
 
@@ -133,3 +133,24 @@ export async function getSession() {
     // Handle the error appropriately, e.g., show an error message to the user
   }
 }
+
+export const GetTime = (setTimeSlot) => {
+  const timeList = [];
+  for (let i = 10; i <= 12; i++) {
+    timeList.push({
+      time: i + ":00 AM",
+    });
+    timeList.push({
+      time: i + ":30 AM",
+    });
+  }
+  for (let i = 1; i <= 6; i++) {
+    timeList.push({
+      time: i + ":00 PM",
+    });
+    timeList.push({
+      time: i + ":30 PM",
+    });
+  }
+  setTimeSlot(timeList);
+};

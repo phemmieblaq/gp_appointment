@@ -20,6 +20,8 @@ import Explore from "../pages/user/explore";
 import Test from "../pages/test";
 import OTP from "../pages/user/otp";
 import Schedule from "../pages/user/schedule";
+import Doctors from "../pages/user/doctors";
+import DoctorsDetails from "../pages/user/doctors/doctorDetails";
 
 const AppRouter = () => {
   return (
@@ -38,6 +40,11 @@ const AppRouter = () => {
             <Route path="dashboard" element={<UserDashboardLayout />}>
               <Route index element={<Home />} />
               <Route path="home" element={<Home />} />
+              <Route path="doctors/:name" element={<Doctors />} />
+              <Route
+                path="doctor-details/:name/:email"
+                element={<DoctorsDetails />}
+              />
 
               <Route path="settings" element={<Personal />} />
               <Route path="schedule" element={<Schedule />} />
