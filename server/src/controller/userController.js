@@ -287,7 +287,7 @@ const verifyOTP = async (req, res) => {
     req.session.user = null;
     console.log(req?.session);
     const getUser = await pool.query(queries.getUserById, [userId]);
-
+    const getDoctorById = await pool.query(queries.getDoctorById, [userId]);
     res.status(200).json({
       message: "Login successful",
       accessToken,
@@ -295,6 +295,7 @@ const verifyOTP = async (req, res) => {
       userId,
       email,
       role: getUser.rows[0].role,
+      doctorId: getDoctorById.rows[0].doctor_id,
     });
   } else {
     res.status(401).json({ error: "Invalid OTP" });

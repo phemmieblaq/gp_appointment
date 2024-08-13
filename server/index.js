@@ -59,6 +59,7 @@ app.get("/csrf-token", (req, res) => {
 
 app.get("/protected-route", (req, res) => {
   const token = req.cookies["accessToken"];
+  console.log(token, "access token");
   if (!token) {
     return res.status(403).send("Session has expired. Please log in again.");
   }

@@ -31,7 +31,7 @@ const getDoctorsBySpecialty = `
 `;
 
 const addDoctor = `INSERT INTO doctors (user_id, specialty_id) VALUES ($1, $2) RETURNING *`;
-
+const getDoctorById = `SELECT * FROM doctors WHERE user_id = $1`;
 const getSchedule = `
   SELECT * FROM Schedules
   WHERE doctor_id = $1
@@ -97,7 +97,7 @@ const bookAppointment = `
   VALUES ($1, $2, $3, $4, $5, $6, $7)
   RETURNING *;
 `;
-
+const getAppointments = `SELECT patient_id, doctor_id, schedule_id, appointment_date, start_time, end_time, reason FROM Appointments WHERE doctor_id = $1`;
 const getPatientRecordsByPatientId = `
   SELECT pr.*, u.first_name, u.last_name, u.email, u.gender, u.date_of_birth, u.phone_number
   FROM PatientRecords pr
@@ -125,6 +125,7 @@ module.exports = {
   checkUsernameExists,
   getUserById,
   deleteUserByEmail,
+  getAppointments,
 
   addSpecialty,
   getAllSpecialties,
@@ -132,6 +133,7 @@ module.exports = {
   getDoctorsBySpecialty,
 
   addDoctor,
+  getDoctorById,
 
   getSchedule,
   getScheduleById,

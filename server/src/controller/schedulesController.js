@@ -18,8 +18,15 @@ const addTimeSlot = async (req, res) => {
   const { doctor_id, available_date, start_time, end_time } = req.body;
   try {
     await pool.query("SET search_path TO public");
-    const result = await pool.query(queries.addTimeSlot, [doctor_id, available_date, start_time, end_time]);
-    res.status(201).json({ message: "Time slot added successfully", data: result.rows[0] });
+    const result = await pool.query(queries.addTimeSlot, [
+      doctor_id,
+      available_date,
+      start_time,
+      end_time,
+    ]);
+    res
+      .status(201)
+      .json({ message: "Time slot added successfully", data: result.rows[0] });
   } catch (error) {
     console.error("Database error:", error);
     res.status(500).json({ error: "An unexpected error occurred." });
@@ -27,7 +34,6 @@ const addTimeSlot = async (req, res) => {
 };
 
 // Update time slot for the doctor (mark as booked)
-
 
 // Create multiple time slots for the doctor
 const createTimeSlots = async (req, res) => {
@@ -37,36 +43,47 @@ const createTimeSlots = async (req, res) => {
   const currentDate = new Date();
 
   // Filter out any slots that are not greater than the current date and time
-  const validSlots = available_slots.filter(slot => new Date(slot.available_date) > currentDate);
+  const validSlots = available_slots.filter(
+    (slot) => new Date(slot.available_date) > currentDate
+  );
 
   if (validSlots.length === 0) {
-    return res.status(400).json({ error: 'All provided time slots are in the past or invalid.' });
+    return res
+      .status(400)
+      .json({ error: "All provided time slots are in the past or invalid." });
   }
 
   try {
-    let queryText = 'INSERT INTO Schedules (doctor_id, available_date, start_time, end_time) VALUES ';
+    let queryText =
+      "INSERT INTO Schedules (doctor_id, available_date, start_time, end_time) VALUES ";
     const queryValues = [doctor_id];
     validSlots.forEach((slot, index) => {
-      queryText += `($1, $${index * 3 + 2}, $${index * 3 + 3}, $${index * 3 + 4}),`;
+      queryText += `($1, $${index * 3 + 2}, $${index * 3 + 3}, $${
+        index * 3 + 4
+      }),`;
       queryValues.push(slot.available_date, slot.start_time, slot.end_time);
     });
-    queryText = queryText.slice(0, -1) + ' RETURNING *'; // Remove trailing comma and add RETURNING *
+    queryText = queryText.slice(0, -1) + " RETURNING *"; // Remove trailing comma and add RETURNING *
 
     const result = await pool.query(queryText, queryValues);
-    res.status(201).json({ message: "Time slots created successfully", data: result.rows });
+    res
+      .status(201)
+      .json({ message: "Time slots created successfully", data: result.rows });
   } catch (error) {
     console.error("Database error:", error);
     res.status(500).json({ error: "An unexpected error occurred." });
   }
 };
 
-
 // Mark time slot as unavailable
 const markUnavailable = async (req, res) => {
   const { scheduleId } = req.params;
   try {
     const result = await pool.query(queries.markUnavailable, [scheduleId]);
-    res.status(200).json({ message: "Time slot marked as unavailable", data: result.rows[0] });
+    res.status(200).json({
+      message: "Time slot marked as unavailable",
+      data: result.rows[0],
+    });
   } catch (error) {
     console.error("Database error:", error);
     res.status(500).json({ error: "An unexpected error occurred." });
@@ -81,7 +98,7 @@ const updateTimeSlot = async (req, res) => {
 
   try {
     const result = await pool.query(
-      'UPDATE Schedules SET available_date = $1, start_time = $2, end_time = $3, is_booked = $4 WHERE schedule_id = $5 RETURNING *',
+      "UPDATE Schedules SET available_date = $1, start_time = $2, end_time = $3, is_booked = $4 WHERE schedule_id = $5 RETURNING *",
       [available_date, start_time, end_time, is_booked, scheduleId]
     );
 
@@ -91,7 +108,7 @@ const updateTimeSlot = async (req, res) => {
 
     res.status(200).json({
       message: "Time slot updated successfully",
-      data: result.rows[0]
+      data: result.rows[0],
     });
   } catch (error) {
     console.error("An unexpected database error occurred:", error);
@@ -111,12 +128,11 @@ const getAvailableTimeSlots = async (req, res) => {
   }
 };
 
-
 module.exports = {
   getSchedule,
   addTimeSlot,
   updateTimeSlot,
   createTimeSlots,
   getAvailableTimeSlots,
-  markUnavailable
+  markUnavailable,
 };
