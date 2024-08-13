@@ -127,6 +127,9 @@ const markUnavailable = async (scheduleId) => {
 const getAppointmentsList = async (doctor_id) => {
   return await api.get(`/appointments/${doctor_id}`);
 };
+const getAppointmentsListPatientId = async (patient_id) => {
+  return await api.get(`/appointments/patient/${patient_id}`);
+};
 
 const createTimeSlots = async (timeSlotsData) => {
   await validateSession();
@@ -150,6 +153,7 @@ export {
   cancelAppointment,
   getAppointmentsList,
   getScheduleByDoctor,
+  getAppointmentsListPatientId,
   addTimeSlot,
   updateTimeSlot,
   markUnavailable,

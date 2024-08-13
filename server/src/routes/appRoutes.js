@@ -59,6 +59,10 @@ router.get(
   "/appointments/:doctor_id",
   appointmentController.GetAppointmentsByDoctorId
 );
+router.get(
+  "/appointments/patient/:patient_id",
+  appointmentController.GetAppointmentsByPatientId
+);
 
 // router.post("/blog", authenticateToken, blogController.postBlog);
 module.exports = router;

@@ -85,7 +85,39 @@ const GetAppointmentsByDoctorId = async (req, res) => {
   }
 };
 
+const GetAppointmentsByPatientId = async (req, res) => {
+  const { patient_id } = req.params;
+
+  try {
+    await pool.query("BEGIN");
+
+    // Check if the time slot is available
+    const appointmentResult = await pool.query(
+      queries.getAppointmentsByUserId,
+      [patient_id]
+    );
+    console.log("Schedule Result:", appointmentResult.rows);
+
+    if (appointmentResult.rows.length === 0) {
+      await pool.query("ROLLBACK");
+      return res.status(400).json({ error: "Appointment is not available." });
+    }
+
+    await pool.query("COMMIT");
+
+    res.status(200).json({
+      message: "Appointments fetched successfully",
+      data: appointmentResult.rows,
+    });
+  } catch (error) {
+    await pool.query("ROLLBACK");
+    console.error("An unexpected database error occurred:", error);
+    res.status(500).json({ error: "An unexpected error occurred." });
+  }
+};
+
 module.exports = {
   bookAppointment,
   GetAppointmentsByDoctorId,
+  GetAppointmentsByPatientId,
 };

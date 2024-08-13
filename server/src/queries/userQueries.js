@@ -98,6 +98,7 @@ const bookAppointment = `
   RETURNING *;
 `;
 const getAppointments = `SELECT patient_id, doctor_id, schedule_id, appointment_date, start_time, end_time, reason FROM Appointments WHERE doctor_id = $1`;
+const getAppointmentsByUserId = `SELECT patient_id, doctor_id, schedule_id, appointment_date, start_time, end_time, reason FROM Appointments WHERE patient_id = $1`;
 const getPatientRecordsByPatientId = `
   SELECT pr.*, u.first_name, u.last_name, u.email, u.gender, u.date_of_birth, u.phone_number
   FROM PatientRecords pr
@@ -138,6 +139,7 @@ module.exports = {
   getSchedule,
   getScheduleById,
   updateSchedule,
+  getAppointmentsByUserId,
   viewPatients,
   bookAppointment,
   viewAppointments,
