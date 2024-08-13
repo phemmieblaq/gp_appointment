@@ -10,25 +10,25 @@ import {
   ButtonHolder,
   AppointmentSection,
   TimeSlotCard,
-  DatePickerWrapper,
   TimeSlotWrapper,
 } from "./styled";
 import { useSelector } from "react-redux";
-import { getDoctorsBySpecialty } from "../../../services/api";
+import {
+  bookAppointment,
+  getDoctorsBySpecialty,
+  getScheduleByDoctor,
+} from "../../../services/api";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../../components/mainButton";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import Textarea from "../../../components/input/TextArea";
 import format from "date-fns/format";
-import { GetTime } from "../../../utils/config";
+import toast from "react-hot-toast";
 
 const DoctorsDetails = () => {
   const loginInfo = useSelector((state) => state.user.loginInfo);
   const [doctorDetails, setDoctor] = useState({});
-  const [timeSlots, setTimeSlot] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
+  const [doctorScheduleList, setDoctorScheduleList] = useState([]);
   const [note, setNote] = useState("");
   const navigate = useNavigate();
   const { name, email } = useParams();
@@ -43,32 +43,48 @@ const DoctorsDetails = () => {
     }
   };
 
+  const handleFetchSchedule = async () => {
+    try {
+      const response = await getScheduleByDoctor(loginInfo?.doctorId);
+      setDoctorScheduleList(response?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     handleFetch();
-    GetTime(setTimeSlot);
+    handleFetchSchedule();
   }, []);
 
-  const handleBook = () => {
-    if (!selectedTime) {
-      alert("Please select a time slot!");
-      return;
+  const handleBook = async () => {
+    try {
+      if (!selectedTimeSlot) {
+        alert("Please select a time slot!");
+        return;
+      }
+      const requiredData = {
+        scheduleId: selectedTimeSlot.schedule_id,
+        reason: note,
+        patient_id: loginInfo?.userId,
+      };
+      console.log(requiredData);
+      const response = await bookAppointment(requiredData);
+      if (response?.status === 200) {
+        toast.success(response?.data?.message);
+      }
+      console.log(response, "result");
+    } catch (error) {
+      console.log(error);
     }
-    const requiredData = {
-      date: format(selectedDate, "yyyy-MM-dd"),
-      time: selectedTime,
-      reason: note,
-      doctor_id: doctorDetails?.doctor_id,
-    };
-    console.log(requiredData);
     // Handle booking logic here
   };
-  console.log(doctorDetails);
 
   return (
     <Container>
       <Header>
         <h1>Book Your Appointment</h1>
-        <p>Choose a suitable date and time with {doctorDetails?.doctor_name}</p>
+        <p>Choose a suitable time with {doctorDetails?.doctor_name}</p>
       </Header>
 
       <Body>
@@ -84,47 +100,38 @@ const DoctorsDetails = () => {
               <strong>Specialty:</strong> {name}
             </InfoItem>
             <DoctorDescription>
-              <strong>
-                Description: component is added to display the doctor's
-                description in a smaller font size, below the other details,
-                giving a clear and comprehensive overview of the doctor.
-              </strong>{" "}
-              {doctorDetails?.description}
+              <strong>Description:</strong> {doctorDetails?.description}
             </DoctorDescription>
           </DoctorInfo>
         </DoctorDetailsSection>
 
         <AppointmentSection>
-          <h3>Select a Date:</h3>
-          <DatePickerWrapper>
-            <DatePicker
-              selected={selectedDate}
-              onChange={(date) => setSelectedDate(date)}
-              dateFormat="dd/MM/yyyy"
-            />
-          </DatePickerWrapper>
-
           <h3>Select a Time Slot:</h3>
           <TimeSlotWrapper>
-            {timeSlots.map((slot, index) => (
+            {doctorScheduleList?.map((slot) => (
               <TimeSlotCard
-                key={index}
-                selected={selectedTime === slot.time}
-                onClick={() => setSelectedTime(slot.time)}
+                key={slot.schedule_id}
+                selected={selectedTimeSlot?.schedule_id === slot.schedule_id}
+                onClick={() => setSelectedTimeSlot(slot)}
               >
-                {slot.time}
+                <span>
+                  {format(new Date(slot.available_date), "dd/MM/yyyy")} |{" "}
+                  {slot.start_time} - {slot.end_time}
+                </span>
+                <p>{slot.is_booked ? "Booked" : "Available"}</p>
               </TimeSlotCard>
             ))}
           </TimeSlotWrapper>
+
           <Textarea
-            placeholder="Description"
+            placeholder="Reason for Appointment"
             onChange={(e) => setNote(e.target.value)}
           />
           <ButtonHolder>
             <Button
               title="Book Appointment"
               onClick={handleBook}
-              disabled={!(selectedDate && selectedTime)}
+              disabled={!selectedTimeSlot}
             />
           </ButtonHolder>
         </AppointmentSection>

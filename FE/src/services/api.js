@@ -92,8 +92,11 @@ const getAppointments = async () => {
 };
 
 const bookAppointment = async (appointmentData) => {
-  await validateSession();
-  return await api.post("/appointments/book", appointmentData);
+  // await validateSession();
+  return await api.post(`/book/${appointmentData?.scheduleId}`, {
+    reason: appointmentData?.reason,
+    patient_id: appointmentData?.patient_id,
+  });
 };
 
 const cancelAppointment = async (appointmentId) => {
@@ -103,7 +106,7 @@ const cancelAppointment = async (appointmentId) => {
 
 // Schedule Endpoints (session validation needed)
 const getScheduleByDoctor = async (doctorId) => {
-  await validateSession();
+  // await validateSession();
   return await api.get(`/schedule/${doctorId}`);
 };
 
@@ -120,6 +123,9 @@ const updateTimeSlot = async (scheduleId, updateData) => {
 const markUnavailable = async (scheduleId) => {
   await validateSession();
   return await api.put(`/timeslot/unavailable/${scheduleId}`);
+};
+const getAppointmentsList = async (doctor_id) => {
+  return await api.get(`/appointments/${doctor_id}`);
 };
 
 const createTimeSlots = async (timeSlotsData) => {
@@ -142,6 +148,7 @@ export {
   getAppointments,
   bookAppointment,
   cancelAppointment,
+  getAppointmentsList,
   getScheduleByDoctor,
   addTimeSlot,
   updateTimeSlot,

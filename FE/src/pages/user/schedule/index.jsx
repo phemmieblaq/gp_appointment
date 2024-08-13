@@ -9,6 +9,7 @@ import moment from "moment";
 import events, { calendarEvents } from "./events";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import BigCalendar from "./test";
+import toast from "react-hot-toast";
 import ScheduleCalendar from "./test";
 import { ReactComponent as CloseIcon } from "../../../assets/svg/close.svg";
 import GeneralModal from "../../../components/modal/GeneralModal";
@@ -41,15 +42,23 @@ const Schedule = () => {
   };
 
   const handleSubmit = async () => {
-    const requiredData = {
-      doctor_id: loginInfo?.doctorId,
-      available_date: format(selectedDate, "yyyy-MM-dd"),
-      start_time: selectedStartTime,
-      end_time: selectedEndTime,
-    };
-    const response = await addTimeSlot(requiredData);
-    console.log(response, "Added time slot");
-    console.log(requiredData);
+    try {
+      const requiredData = {
+        doctor_id: loginInfo?.doctorId,
+        available_date: format(selectedDate, "yyyy-MM-dd"),
+        start_time: selectedStartTime,
+        end_time: selectedEndTime,
+      };
+      const response = await addTimeSlot(requiredData);
+      if (response?.status === 201) {
+        console.log(response, "Added time slot");
+        console.log(requiredData);
+        toast.success(response?.data?.message);
+        setOpenModal(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

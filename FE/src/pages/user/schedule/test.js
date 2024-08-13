@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import Dialog from "@mui/material/Dialog";
@@ -19,9 +19,12 @@ import TimePicker from "rc-time-picker";
 import DialogTitle from "@mui/material/DialogTitle";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
+import { getAppointmentsList } from "../../../services/api";
+import { useSelector } from "react-redux";
 momentLocalizer(moment);
 
 const ScheduleCalendar = () => {
+  const loginInfo = useSelector((state) => state.user.loginInfo);
   const [events, setEvents] = useState([]);
   const [title, setTitle] = useState("");
   const [start, setStart] = useState("");
@@ -32,6 +35,7 @@ const ScheduleCalendar = () => {
   const [openEvent, setOpenEvent] = useState(false);
   const [clickedEvent, setClickedEvent] = useState({});
   const [value, onChange] = useState("10:00");
+  const [eventList, setEventList] = useState([]);
 
   const handleClose = () => {
     setOpenEvent(false);
@@ -85,6 +89,39 @@ const ScheduleCalendar = () => {
     handleClose();
   };
 
+  const handleFetchAppointment = async () => {
+    try {
+      const response = await getAppointmentsList(loginInfo?.doctorId);
+      console.log(response, "ddddd irennn");
+      if (response?.status === 200) {
+        const list = response?.data?.data?.map((appointment) => ({
+          title: appointment.reason,
+          start: new Date(
+            `${appointment.appointment_date.split("T")[0]}T${
+              appointment.start_time
+            }`
+          ),
+          end: new Date(
+            `${appointment.appointment_date.split("T")[0]}T${
+              appointment.end_time
+            }`
+          ),
+          desc: appointment?.reason,
+        }));
+        console.log(list);
+        setEventList(list);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(calendarEvents);
+
+  useEffect(() => {
+    handleFetchAppointment();
+  }, []);
+  console.log("event list is", eventList);
   const eventActions = [
     <Button
       key="cancel-event"
@@ -138,16 +175,16 @@ const ScheduleCalendar = () => {
       {/* <div id="Calendar"> */}
       {/* react-big-calendar library utilized to render calendar */}
       <Calendar
-        events={calendarEvents}
+        events={eventList}
         step={60}
         localizer={localizer}
         views={allViews}
         selectable={true}
         timeslots={2}
-        defaultDate={new Date(2016, 3, 1)}
+        defaultDate={new Date()}
         popup={false}
-        onShowMore={(calendarEvents, date) =>
-          this.setState({ showModal: true, calendarEvents })
+        onShowMore={(eventList, date) =>
+          this.setState({ showModal: true, eventList })
         }
         onSelectEvent={handleEventSelected}
         onSelectSlot={handleSlotSelected}
@@ -211,10 +248,10 @@ const ScheduleCalendar = () => {
         open={openEvent}
         onClose={handleClose}
       >
-        <DialogTitle>{"Schedule"}</DialogTitle>
+        <DialogTitle>{"Appointment"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-            Schedule Details for the Event
+            Appointment Details for the Event
           </DialogContentText>
         </DialogContent>
 

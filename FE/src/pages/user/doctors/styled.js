@@ -160,7 +160,8 @@ export const TimeSlotWrapper = styled.div`
 `;
 
 export const TimeSlotCard = styled.div`
-  display: inline-block;
+  display: flex;
+  align-items: center;
   padding: 10px 20px;
   margin: 8px;
   background-color: ${({ selected }) => (selected ? "#007bff" : "#f0f0f0")};
