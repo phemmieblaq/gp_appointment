@@ -22,6 +22,7 @@ import MedicalCard from "../../../components/card/medicalCard";
 import { useSelector } from "react-redux";
 import {
   getAllSpecialties,
+  getAppointmentsListPatientId,
   getDoctorsBySpecialty,
 } from "../../../services/api";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -31,24 +32,24 @@ const Home = () => {
   console.log("login", loginInfo);
   const [spectialty, setSpecialty] = useState([]);
   const [doctors, setDoctors] = useState([]);
-  const navigate = useNavigate();
+  const [eventList, setEventList] = useState([]);
 
-  const handleFetchSpecialty = async () => {
+  const handleFetchAppointment = async () => {
     try {
-      const response = await getAllSpecialties();
-      console.log(response);
-      setSpecialty(response?.data?.data);
+      const response = await getAppointmentsListPatientId(loginInfo?.userId);
+      console.log(response, "ddddd irennn");
+      if (response?.status === 200) {
+        setEventList(response?.data?.data);
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
   useEffect(() => {
-    handleFetchSpecialty();
+    handleFetchAppointment();
   }, []);
 
-  const handleClick = async (name) => {
-    navigate(`/dashboard/doctors/${name}`);
-  };
   console.log(doctors);
   return (
     <div>
@@ -66,7 +67,15 @@ const Home = () => {
               <SessionCard />
               <SecondWrapper>
                 <Heading>Upcoming Appointment</Heading>
-                <CheckUpCard />
+                {eventList?.map((el, index) => (
+                  <CheckUpCard
+                    key={index}
+                    reason={el?.reason}
+                    address={el?.address}
+                    date={el?.appointment_date.slice(0, 10)}
+                    time={el?.start_time}
+                  />
+                ))}
               </SecondWrapper>
             </FlexCard>
             <SecondWrapper>
@@ -87,16 +96,6 @@ const Home = () => {
                 />
               ))}
             </MappingSection> */}
-            <SpecialtyWrapper>
-              {spectialty?.map((data, index) => (
-                <SpecialtyCard
-                  onClick={() => handleClick(data?.specialty_name)}
-                >
-                  <SpelName>{data?.specialty_name}</SpelName>
-                  <SpelDescription>{data?.description}</SpelDescription>
-                </SpecialtyCard>
-              ))}
-            </SpecialtyWrapper>
           </HospitalSection>
         </Body>
       </Container>

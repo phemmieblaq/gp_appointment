@@ -14,21 +14,6 @@ const UpcomingAppointment = () => {
       const response = await getAppointmentsListPatientId(loginInfo?.userId);
       console.log(response, "ddddd irennn");
       if (response?.status === 200) {
-        // const list = response?.data?.data?.map((appointment) => ({
-        //   title: appointment.reason,
-        //   start: new Date(
-        //     `${appointment.appointment_date.split("T")[0]}T${
-        //       appointment.start_time
-        //     }`
-        //   ),
-        //   end: new Date(
-        //     `${appointment.appointment_date.split("T")[0]}T${
-        //       appointment.end_time
-        //     }`
-        //   ),
-        //   desc: appointment?.reason,
-        // }));
-
         setEventList(response?.data?.data);
       }
     } catch (error) {

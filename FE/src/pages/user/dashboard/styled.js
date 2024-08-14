@@ -94,9 +94,9 @@ export const MappingSection = styled.div`
 export const SpecialtyWrapper = styled.div`
   border: solid red;
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 cards per row */
-  gap: 16px; /* Optional: Adds space between the cards */
-  padding: 16px; /* Optional: Adds padding inside the wrapper */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  padding: 16px;
 `;
 export const SpecialtyCard = styled.div`
   border: solid red;

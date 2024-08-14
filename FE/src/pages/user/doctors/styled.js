@@ -156,13 +156,14 @@ export const TimeSlotWrapper = styled.div`
   display: flex;
   display: grid;
 
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
 `;
 
 export const TimeSlotCard = styled.div`
   display: flex;
-  align-items: center;
   padding: 10px 20px;
+  flex-direction: column; /* Arrange content in a column */
+  align-items: flex-start; /* Align items to the start of the column */
   margin: 8px;
   background-color: ${({ selected }) => (selected ? "#007bff" : "#f0f0f0")};
   color: ${({ selected }) => (selected ? "#fff" : "#333")};

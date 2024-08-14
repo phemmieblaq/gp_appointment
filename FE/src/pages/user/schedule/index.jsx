@@ -91,13 +91,13 @@ const Schedule = () => {
             </Top>
             <>
               <h3>Select a Date:</h3>
-              <DatePickerWrapper>
+              {/* <DatePickerWrapper> */}
                 <DatePicker
                   selected={selectedDate}
                   onChange={(date) => setSelectedDate(date)}
                   dateFormat="dd/MM/yyyy"
                 />
-              </DatePickerWrapper>
+              {/* </DatePickerWrapper> */}
 
               <TimeSection>
                 <StartTime>
@@ -221,6 +221,7 @@ const Form = styled.form``;
 
 const DatePickerWrapper = styled.div`
   margin-bottom: 20px;
+  border: solid red;
 `;
 const TimeSlotWrapper = styled.div`
   display: flex;

@@ -118,7 +118,10 @@ const DoctorsDetails = () => {
                   {format(new Date(slot.available_date), "dd/MM/yyyy")} |{" "}
                   {slot.start_time} - {slot.end_time}
                 </span>
-                <p>{slot.is_booked ? "Booked" : "Available"}</p>
+                <br />
+                <p style={{ color: slot.is_booked ? "red" : "green" }}>
+                  {slot.is_booked ? "Booked" : "Available"}
+                </p>
               </TimeSlotCard>
             ))}
           </TimeSlotWrapper>

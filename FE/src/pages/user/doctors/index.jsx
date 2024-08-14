@@ -50,38 +50,19 @@ const Doctors = () => {
     <div>
       <Container>
         <Header>
-          <p>Book your GP</p>
-          <p>
-            Trusted GP appointment booking services to support your healthcare
-            journey.
-          </p>
+          <p>Doctors</p>
+          <p>Select Doctor</p>
         </Header>
-        <Body>
-          <GridContainer>
-            <FlexCard>
-              <SessionCard />
-              <SecondWrapper>
-                <Heading>Upcoming Appointment</Heading>
-                <CheckUpCard />
-              </SecondWrapper>
-            </FlexCard>
-            <SecondWrapper>
-              <Heading>What's new</Heading>
-              <BlogCard />
-            </SecondWrapper>
-          </GridContainer>
-          <HospitalSection>
-            <SpecialtyWrapper>
-              {doctorList?.map((doctor, index) => (
-                <SpecialtyCard onClick={() => handleClick(doctor?.email)}>
-                  <SpelName>{name}</SpelName>
-                  <SpelDescription>{doctor?.doctor_name}</SpelDescription>
-                  <SpelDescription>{doctor?.email}</SpelDescription>
-                </SpecialtyCard>
-              ))}
-            </SpecialtyWrapper>
-          </HospitalSection>
-        </Body>
+
+        <SpecialtyWrapper>
+          {doctorList?.map((doctor, index) => (
+            <SpecialtyCard onClick={() => handleClick(doctor?.email)}>
+              <SpelName>{name}</SpelName>
+              <SpelDescription>{doctor?.doctor_name}</SpelDescription>
+              <SpelDescription>{doctor?.email}</SpelDescription>
+            </SpecialtyCard>
+          ))}
+        </SpecialtyWrapper>
       </Container>
     </div>
   );
