@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import {
-  SpecialtyCard,
-  SpecialtyWrapper,
-  SpelDescription,
-  SpelName,
-} from "../dashboard/styled";
+import { SpecialtyWrapper } from "../dashboard/styled";
 import { getAllSpecialties } from "../../../services/api";
 import { useNavigate } from "react-router-dom";
+import DetailsCard from "../../../components/ProductCard";
 
 const BookAppointment = () => {
   const navigate = useNavigate();
@@ -26,19 +22,16 @@ const BookAppointment = () => {
     handleFetchSpecialty();
   }, []);
 
-  const handleClick = async (name) => {
-    navigate(`/dashboard/doctors/${name}`);
-  };
-
   return (
     <>
       <HeaderText>Select Specialty to proceed</HeaderText>
       <SpecialtyWrapper>
         {spectialty?.map((data, index) => (
-          <SpecialtyCard onClick={() => handleClick(data?.specialty_name)}>
-            <SpelName>{data?.specialty_name}</SpelName>
-            <SpelDescription>{data?.description}</SpelDescription>
-          </SpecialtyCard>
+          <DetailsCard
+            title={data?.specialty_name}
+            body={data?.description}
+            to={`/dashboard/doctors/${data?.specialty_name}`}
+          />
         ))}
       </SpecialtyWrapper>
     </>
@@ -47,7 +40,9 @@ const BookAppointment = () => {
 
 export default BookAppointment;
 
-const HeaderText = styled.h1``;
+const HeaderText = styled.h1`
+  margin-bottom: 14px;
+`;
 
 const Body = styled.div`
   padding-block: 40px;

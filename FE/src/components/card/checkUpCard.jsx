@@ -3,12 +3,15 @@ import styled from "styled-components";
 import blueCalendar from "../../assets/svg/blueCalendar.svg";
 import clock from "../../assets/svg/clock.svg";
 import map from "../../assets/images/map.jpeg";
+import { HiTrash } from "react-icons/hi2";
 
 const CheckUpCard = ({
   reason = "General check up",
   address = "16 Adijat crop street, Hearthrow London, United Kingdom",
   date = "05/12/2024",
   time = "12:00 PM",
+  booking,
+  handleDelete,
 }) => {
   return (
     <div>
@@ -27,6 +30,13 @@ const CheckUpCard = ({
               <Time>{time}</Time>
             </TimeWrapper>
           </DateWrapper>
+
+          {booking && (
+            <DeleteWrapper onClick={handleDelete}>
+              <HiTrash size={24} />
+              <Time>Delete</Time>
+            </DeleteWrapper>
+          )}
         </InnerWrapper>
         <MapWrapper>
           <img src={map} alt="" />
@@ -39,6 +49,16 @@ const CheckUpCard = ({
 
 export default CheckUpCard;
 
+const DeleteWrapper = styled.div`
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  align-items: center;
+  margin-top: 20px;
+  justify-content: flex-start;
+  cursor: pointer;
+  color: red;
+`;
 const Wrapper = styled.div`
   max-width: 850px;
   padding: 24px;

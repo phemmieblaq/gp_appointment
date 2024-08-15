@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import Dialog from "@mui/material/Dialog";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 // import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -19,8 +18,11 @@ import TimePicker from "rc-time-picker";
 import DialogTitle from "@mui/material/DialogTitle";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
-import { getAppointmentsList } from "../../../services/api";
+import { deleteAppointment, getAppointmentsList } from "../../../services/api";
 import { useSelector } from "react-redux";
+import styled from "styled-components";
+import Button from "../../../components/mainButton";
+import toast from "react-hot-toast";
 momentLocalizer(moment);
 
 const ScheduleCalendar = () => {
@@ -29,6 +31,7 @@ const ScheduleCalendar = () => {
   const [title, setTitle] = useState("");
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
+  const [appointmentId, setAppointmentId] = useState("");
   const [desc, setDesc] = useState("");
   const [valuer, setValue] = React.useState(null);
   const [openSlot, setOpenSlot] = useState(false);
@@ -56,6 +59,7 @@ const ScheduleCalendar = () => {
     setClickedEvent(event);
     setStart(event.start);
     setEnd(event.end);
+    setAppointmentId(event.appointment_id);
     setTitle(event.title);
     setDesc(event.desc);
     setOpenEvent(true);
@@ -96,6 +100,7 @@ const ScheduleCalendar = () => {
       if (response?.status === 200) {
         const list = response?.data?.data?.map((appointment) => ({
           title: appointment.reason,
+          appointment_id: appointment?.appointment_id,
           start: new Date(
             `${appointment.appointment_date.split("T")[0]}T${
               appointment.start_time
@@ -116,12 +121,46 @@ const ScheduleCalendar = () => {
     }
   };
 
-  console.log(calendarEvents);
+  console.log(appointmentId);
 
   useEffect(() => {
     handleFetchAppointment();
   }, []);
-  console.log("event list is", eventList);
+
+  const handleCancelAppointment = async () => {
+    try {
+      const deleteResponse = await deleteAppointment(appointmentId);
+      console.log(deleteResponse);
+      if (deleteResponse?.status === 200) {
+        toast.success(deleteResponse?.data?.message);
+        // window.location.reload();
+        const response = await getAppointmentsList(loginInfo?.doctorId);
+        console.log(response, "ddddd irennn");
+        if (response?.status === 200) {
+          const list = response?.data?.data?.map((appointment) => ({
+            id: appointment?.appointment_id,
+            title: appointment.reason,
+            start: new Date(
+              `${appointment.appointment_date.split("T")[0]}T${
+                appointment.start_time
+              }`
+            ),
+            end: new Date(
+              `${appointment.appointment_date.split("T")[0]}T${
+                appointment.end_time
+              }`
+            ),
+            desc: appointment?.reason,
+          }));
+          console.log(list);
+          setEventList(list);
+          handleClose();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const eventActions = [
     <Button
       key="cancel-event"
@@ -173,7 +212,7 @@ const ScheduleCalendar = () => {
   return (
     <>
       {/* <div id="Calendar"> */}
-      {/* react-big-calendar library utilized to render calendar */}
+      {/*  */}
       <Calendar
         events={eventList}
         step={60}
@@ -238,7 +277,7 @@ const ScheduleCalendar = () => {
           /> */}
       </Dialog>
 
-      {/* Material-ui Modal for Existing Event */}
+      {/*  Modal for Existing Event */}
       <Dialog
         title={`View/Edit Appointment of ${moment(start).format(
           "MMMM Do YYYY"
@@ -284,6 +323,14 @@ const ScheduleCalendar = () => {
           label="Description"
           onChange={(e) => setDesc(e.target.value)}
         />
+        <ButtonHolder>
+          <Button
+            title="Cancel"
+            bg_color={"purple"}
+            onClick={() => handleCancelAppointment()}
+          />
+          <Button title="Submit" />
+        </ButtonHolder>
 
         {/* <TimePicker
             format="ampm"
@@ -306,3 +353,10 @@ const ScheduleCalendar = () => {
 };
 
 export default ScheduleCalendar;
+
+const ButtonHolder = styled.div`
+  width: 500px;
+  display: flex;
+  margin-top: 20px;
+  gap: 100px;
+`;

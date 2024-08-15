@@ -130,6 +130,9 @@ const getAppointmentsList = async (doctor_id) => {
 const getAppointmentsListPatientId = async (patient_id) => {
   return await api.get(`/appointments/patient/${patient_id}`);
 };
+const deleteAppointment = async (appointmentId) => {
+  return await api.delete(`/appointment/${appointmentId}`);
+};
 
 const createTimeSlots = async (timeSlotsData) => {
   await validateSession();
@@ -145,6 +148,7 @@ export {
   getAllSpecialties,
   getDoctorsBySpecialty,
   getScheduleByDoctorID,
+  deleteAppointment,
   logoutUser,
   updateUser,
   deleteUser,

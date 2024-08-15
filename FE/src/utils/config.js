@@ -3,6 +3,10 @@ import { HomeIcon } from "../assets/icon/HomeIcon";
 import { ResourcesIcon } from "../assets/icon/ResourcesIcon";
 import { SettingsIcon } from "../assets/icon/SettingsIcon";
 import axios from "axios";
+import {
+  deleteAppointment,
+  getAppointmentsListPatientId,
+} from "../services/api";
 
 export const userSidebarItems = [
   {
@@ -17,12 +21,6 @@ export const userSidebarItems = [
     icon: ResourcesIcon,
     path: "/dashboard/appointments",
   },
-  // {
-  //   id: 3,
-  //   title: "Explore",
-  //   icon: SettingsIcon,
-  //   path: "/dashboard/explore",
-  // },
   {
     id: 3,
     title: "Settings",
@@ -153,4 +151,29 @@ export const GetTime = (setTimeSlot) => {
     });
   }
   setTimeSlot(timeList);
+};
+
+export const handleDeleteAppointment = async (
+  appointmentId,
+  userId,
+  setEventList
+) => {
+  try {
+    const response = await deleteAppointment(
+      appointmentId,
+      userId,
+      setEventList
+    );
+    console.log(response);
+    if (response?.status === 200) {
+      toast.success(response?.data?.message);
+      // window.location.reload();
+      const responseList = await getAppointmentsListPatientId(userId);
+      if (responseList?.status === 200) {
+        setEventList(responseList?.data?.data);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };

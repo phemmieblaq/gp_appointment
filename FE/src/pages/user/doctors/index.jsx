@@ -19,13 +19,14 @@ import BlogCard from "../../../components/card/blogCard";
 import { useSelector } from "react-redux";
 import { getDoctorsBySpecialty } from "../../../services/api";
 import { useNavigate, useParams } from "react-router-dom";
+import ProductCard from "../../../components/ProductCard";
+import DetailsCard from "../../../components/ProductCard";
 
 const Doctors = () => {
   const loginInfo = useSelector((state) => state.user.loginInfo);
-  console.log("login", loginInfo);
-  const [spectialty, setSpecialty] = useState([]);
+
   const [doctorList, setDoctors] = useState([]);
-  const navigate = useNavigate();
+
   const { name } = useParams();
 
   console.log("ddd", name);
@@ -43,9 +44,6 @@ const Doctors = () => {
     handleFetch();
   }, []);
 
-  const handleClick = async (email) => {
-    navigate(`/dashboard/doctor-details/${name}/${email}`);
-  };
   return (
     <div>
       <Container>
@@ -56,11 +54,12 @@ const Doctors = () => {
 
         <SpecialtyWrapper>
           {doctorList?.map((doctor, index) => (
-            <SpecialtyCard onClick={() => handleClick(doctor?.email)}>
-              <SpelName>{name}</SpelName>
-              <SpelDescription>{doctor?.doctor_name}</SpelDescription>
-              <SpelDescription>{doctor?.email}</SpelDescription>
-            </SpecialtyCard>
+            <DetailsCard
+              title={doctor?.doctor_name}
+              body={doctor?.email}
+              to={`/dashboard/doctor-details/${name}/${doctor?.email}`}
+              email={name}
+            />
           ))}
         </SpecialtyWrapper>
       </Container>

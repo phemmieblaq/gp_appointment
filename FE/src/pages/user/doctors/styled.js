@@ -92,14 +92,12 @@ export const MappingSection = styled.div`
 `;
 
 export const SpecialtyWrapper = styled.div`
-  border: solid red;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   padding: 16px;
 `;
 export const SpecialtyCard = styled.div`
-  border: solid red;
   border-radius: 15px;
   padding: 16px;
   height: 100px;
@@ -142,7 +140,7 @@ export const AppointmentSection = styled.div`
   width: 50%;
   justify-content: flex-start;
   gap: 16px;
-
+  margin-top: 20px;
   h3 {
     font-size: 18px;
     font-weight: 600;
@@ -155,7 +153,6 @@ export const DatePickerWrapper = styled.div`
 export const TimeSlotWrapper = styled.div`
   display: flex;
   display: grid;
-
   grid-template-columns: repeat(2, 1fr);
 `;
 

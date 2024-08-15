@@ -42,6 +42,10 @@ const getScheduleById = `
   SELECT * FROM Schedules
   WHERE schedule_id = $1
 `;
+const getAppointmentById = `
+  SELECT * FROM appointments
+  WHERE appointment_id = $1
+`;
 
 const updateSchedule = `
   UPDATE Schedules
@@ -97,8 +101,8 @@ const bookAppointment = `
   VALUES ($1, $2, $3, $4, $5, $6, $7)
   RETURNING *;
 `;
-const getAppointments = `SELECT patient_id, doctor_id, schedule_id, appointment_date, start_time, end_time, reason FROM Appointments WHERE doctor_id = $1`;
-const getAppointmentsByUserId = `SELECT patient_id, doctor_id, schedule_id, appointment_date, start_time, end_time, reason FROM Appointments WHERE patient_id = $1`;
+const getAppointments = `SELECT appointment_id, patient_id, doctor_id, schedule_id, appointment_date, start_time, end_time, reason FROM Appointments WHERE doctor_id = $1`;
+const getAppointmentsByUserId = `SELECT appointment_id, patient_id, doctor_id, schedule_id, appointment_date, start_time, end_time, reason FROM Appointments WHERE patient_id = $1`;
 const getPatientRecordsByPatientId = `
   SELECT pr.*, u.first_name, u.last_name, u.email, u.gender, u.date_of_birth, u.phone_number
   FROM PatientRecords pr
@@ -119,6 +123,9 @@ const addPatientRecord = `
   ) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *
 `;
 
+const deleteAppointmentById =
+  "DELETE FROM appointments WHERE appointment_id = $1";
+
 module.exports = {
   addUser,
   getUserByEmail,
@@ -131,6 +138,7 @@ module.exports = {
   addSpecialty,
   getAllSpecialties,
   getSpecialtyByName,
+  getAppointmentById,
   getDoctorsBySpecialty,
 
   addDoctor,
@@ -142,6 +150,7 @@ module.exports = {
   getAppointmentsByUserId,
   viewPatients,
   bookAppointment,
+  deleteAppointmentById,
   viewAppointments,
 
   addTimeSlot,

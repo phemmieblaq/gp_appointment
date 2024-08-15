@@ -25,6 +25,7 @@ export const GridContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-bottom: 60px;
+  gap: 20px;
 `;
 
 export const Header = styled.div`
@@ -92,14 +93,12 @@ export const MappingSection = styled.div`
 `;
 
 export const SpecialtyWrapper = styled.div`
-  border: solid red;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
   padding: 16px;
 `;
 export const SpecialtyCard = styled.div`
-  border: solid red;
   border-radius: 15px;
   padding: 16px;
   display: flex;

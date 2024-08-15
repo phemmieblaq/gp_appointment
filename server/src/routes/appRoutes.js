@@ -64,5 +64,10 @@ router.get(
   appointmentController.GetAppointmentsByPatientId
 );
 
+router.delete(
+  "/appointment/:appointmentId",
+  appointmentController.DeleteAppointmentsById
+);
+
 // router.post("/blog", authenticateToken, blogController.postBlog);
 module.exports = router;

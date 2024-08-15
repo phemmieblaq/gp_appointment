@@ -75,9 +75,8 @@ const DoctorsDetails = () => {
       }
       console.log(response, "result");
     } catch (error) {
-      console.log(error);
+      toast.error(error?.response?.data?.error);
     }
-    // Handle booking logic here
   };
 
   return (
