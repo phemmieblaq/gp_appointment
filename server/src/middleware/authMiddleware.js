@@ -1,27 +1,24 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
+const { Forbidden, Unauthorized } = require("../util/requestError");
 
+const authorizer = (req, res, next) => {
+  const token = req.cookies.accessToken;
+  console.log("token", req.cookies);
 
-const authMiddleware = (req, res, next) => {
-  const token = req.cookies['accessToken']; 
-    console.log(req.cookies)                   // Access the token from HTTP-only cookies
   if (!token) {
-    return res.sendStatus(401); // Unauthorized if no token
+    throw new Unauthorized("Authorization token is missing");
   }
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) {
-      console.log(err);
-      if (err.name === 'TokenExpiredError') {
-        return res.status(401).json({ error: 'Token expired' }); // Send specific message when token is expired
-      }
-      return res.sendStatus(403); // Forbidden if token is invalid
+      throw new Forbidden("Forbidden token");
     }
+    console.log("user", user);
+
     req.user = user;
-    console.log(req.user);
     next();
   });
+  9;
 };
 
-module.exports = authMiddleware;
-
-  
+module.exports = authorizer;

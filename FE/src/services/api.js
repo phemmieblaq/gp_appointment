@@ -65,12 +65,12 @@ const getUserById = async (userId) => {
 };
 
 const updateUser = async (userId, updateData) => {
-  //await validateSession();
+  //
   return await api.put(`/users/${userId}`, updateData);
 };
 
 const deleteUser = async (userId) => {
-  //await validateSession();
+  //
   return await api.delete(`/users/${userId}`);
 };
 
@@ -87,12 +87,11 @@ const getAllSpecialties = async () => {
 
 // Appointment Endpoints (session validation needed)
 const getAppointments = async () => {
-  await validateSession();
   return await api.get("/appointments");
 };
 
 const bookAppointment = async (appointmentData) => {
-  // await validateSession();
+  //
   return await api.post(`/book/${appointmentData?.scheduleId}`, {
     reason: appointmentData?.reason,
     patient_id: appointmentData?.patient_id,
@@ -100,34 +99,32 @@ const bookAppointment = async (appointmentData) => {
 };
 
 const cancelAppointment = async (appointmentId) => {
-  await validateSession();
   return await api.delete(`/appointments/${appointmentId}`);
 };
 
 // Schedule Endpoints (session validation needed)
 const getScheduleByDoctor = async (doctorId) => {
-  // await validateSession();
+  //
   return await api.get(`/schedule/${doctorId}`);
 };
 
 const addTimeSlot = async (timeSlotData) => {
-  // await validateSession();
+  //
   return await api.post("/timeslot", timeSlotData);
 };
 
 const updateTimeSlot = async (scheduleId, updateData) => {
-  await validateSession();
   return await api.put(`/timeslot/${scheduleId}`, updateData);
 };
 
 const markUnavailable = async (scheduleId) => {
-  await validateSession();
   return await api.put(`/timeslot/unavailable/${scheduleId}`);
 };
 const getAppointmentsList = async (doctor_id) => {
   return await api.get(`/appointments/${doctor_id}`);
 };
 const getAppointmentsListPatientId = async (patient_id) => {
+  //
   return await api.get(`/appointments/patient/${patient_id}`);
 };
 const deleteAppointment = async (appointmentId) => {
@@ -135,7 +132,6 @@ const deleteAppointment = async (appointmentId) => {
 };
 
 const createTimeSlots = async (timeSlotsData) => {
-  await validateSession();
   return await api.post("/timeslots", timeSlotsData);
 };
 

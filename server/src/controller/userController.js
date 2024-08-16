@@ -264,7 +264,7 @@ const verifyOTP = async (req, res) => {
       { userId: req.session.user.id, email: req.session.user.email },
       process.env.REFRESH_TOKEN_SECRET
     );
-
+    console.log("bamidele access", accessToken);
     // Set the tokens in HttpOnly cookies
     // Removed 'secure: true' for local development on HTTP
     res.cookie("accessToken", accessToken, {
