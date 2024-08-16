@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   AlternateEmailDetails,
@@ -9,15 +8,16 @@ import {
   PhotoDetails,
   PhotoImage,
   ProfileContainer,
-  
   TextContainer,
   TextParagraph,
   TextTitle,
 } from "./style";
-import User  from "../../assets/images/user.png";
+import User from "../../assets/images/user.png";
 import { InputWithLabel } from "../input";
+import { useSelector } from "react-redux";
 
 const ProfileDetails = () => {
+  const loginInfo = useSelector((state) => state.user.loginInfo);
   return (
     <ProfileContainer>
       <PhotoDetails>
@@ -37,29 +37,18 @@ const ProfileDetails = () => {
           <TextParagraph>This cannot be changed by you</TextParagraph>
         </TextContainer>
         <EmailWrapper>
-          <p>akinyemibamidele2@gmail.com</p>
+          <p>{loginInfo?.email}</p>
         </EmailWrapper>
       </EmailDetails>
-      <AlternateEmailDetails>
+      <EmailDetails>
         <TextContainer>
-          <TextTitle>Alternative email address</TextTitle>
-          <TextParagraph>
-            This will be used to contact you as an alternate means
-          </TextParagraph>
+          <TextTitle>Role</TextTitle>
+          <TextParagraph>This cannot be changed by you</TextParagraph>
         </TextContainer>
-        <InputWrapper>
-          <InputWithLabel placeholder={"akinyemibamidele2@gmail.com"} />
-        </InputWrapper>
-      </AlternateEmailDetails>
-
-      <PasswordDetails>
-        <TextContainer>
-          <TextTitle>Password</TextTitle>
-        </TextContainer>
-        <InputWrapper>
-          <InputWithLabel password placeholder={"123456"} />
-        </InputWrapper>
-      </PasswordDetails>
+        <EmailWrapper>
+          <p>{loginInfo?.role}</p>
+        </EmailWrapper>
+      </EmailDetails>
     </ProfileContainer>
   );
 };

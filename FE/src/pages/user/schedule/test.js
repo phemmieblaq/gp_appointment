@@ -3,18 +3,11 @@ import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
 import Dialog from "@mui/material/Dialog";
 import TextField from "@mui/material/TextField";
-// import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { calendarEvents } from "./events";
-// import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import TimePicker from "rc-time-picker";
-// import AdapterDateFns from "@mui/lab/AdapterDateFns";
-// import LocalizationProvider from "@mui/lab/LocalizationProvider";
-// import TimePicker from "@mui/lab/TimePicker";
+
 import DialogTitle from "@mui/material/DialogTitle";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
@@ -33,7 +26,6 @@ const ScheduleCalendar = () => {
   const [end, setEnd] = useState("");
   const [appointmentId, setAppointmentId] = useState("");
   const [desc, setDesc] = useState("");
-  const [valuer, setValue] = React.useState(null);
   const [openSlot, setOpenSlot] = useState(false);
   const [openEvent, setOpenEvent] = useState(false);
   const [clickedEvent, setClickedEvent] = useState({});
@@ -46,7 +38,6 @@ const ScheduleCalendar = () => {
   };
 
   const handleSlotSelected = (slotInfo) => {
-    console.log("Real slotInfo", slotInfo);
     setTitle("");
     setDesc("");
     setStart(slotInfo.start);
@@ -55,7 +46,6 @@ const ScheduleCalendar = () => {
   };
 
   const handleEventSelected = (event) => {
-    console.log("event", event);
     setClickedEvent(event);
     setStart(event.start);
     setEnd(event.end);
@@ -96,7 +86,7 @@ const ScheduleCalendar = () => {
   const handleFetchAppointment = async () => {
     try {
       const response = await getAppointmentsList(loginInfo?.doctorId);
-      console.log(response, "ddddd irennn");
+
       if (response?.status === 200) {
         const list = response?.data?.data?.map((appointment) => ({
           title: appointment.reason,
@@ -113,15 +103,13 @@ const ScheduleCalendar = () => {
           ),
           desc: appointment?.reason,
         }));
-        console.log(list);
+
         setEventList(list);
       }
     } catch (error) {
       console.log(error);
     }
   };
-
-  console.log(appointmentId);
 
   useEffect(() => {
     handleFetchAppointment();
@@ -130,12 +118,12 @@ const ScheduleCalendar = () => {
   const handleCancelAppointment = async () => {
     try {
       const deleteResponse = await deleteAppointment(appointmentId);
-      console.log(deleteResponse);
+
       if (deleteResponse?.status === 200) {
         toast.success(deleteResponse?.data?.message);
         // window.location.reload();
         const response = await getAppointmentsList(loginInfo?.doctorId);
-        console.log(response, "ddddd irennn");
+
         if (response?.status === 200) {
           const list = response?.data?.data?.map((appointment) => ({
             id: appointment?.appointment_id,
@@ -152,7 +140,7 @@ const ScheduleCalendar = () => {
             ),
             desc: appointment?.reason,
           }));
-          console.log(list);
+
           setEventList(list);
           handleClose();
         }

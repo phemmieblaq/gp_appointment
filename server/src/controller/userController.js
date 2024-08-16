@@ -295,6 +295,8 @@ const verifyOTP = async (req, res) => {
       userId,
       email,
       role: getUser.rows[0].role,
+      first_name: getUser.rows[0].first_name,
+      last_name: getUser.rows[0].last_name,
       doctorId: getDoctorById.rows[0].doctor_id,
     });
   } else {

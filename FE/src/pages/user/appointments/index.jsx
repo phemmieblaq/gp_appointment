@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { appointment } from "./constant";
 import CheckUpCard from "../../../components/card/checkUpCard";
 import styled from "styled-components";
 import {
@@ -8,6 +7,8 @@ import {
 } from "../../../services/api";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
+import NotFound from "../../../components/NotFound";
+import { parseISO } from "date-fns";
 
 const UpcomingAppointment = () => {
   const loginInfo = useSelector((state) => state.user.loginInfo);
@@ -18,7 +19,13 @@ const UpcomingAppointment = () => {
       const response = await getAppointmentsListPatientId(loginInfo?.userId);
 
       if (response?.status === 200) {
-        setEventList(response?.data?.data);
+        const today = new Date();
+        const upcomingEvents = response?.data?.data.filter((event) => {
+          const appointmentDate = parseISO(event.appointment_date);
+          return appointmentDate.getTime() >= today.getTime();
+        });
+
+        setEventList(upcomingEvents);
       }
     } catch (error) {
       console.log(error);
@@ -50,17 +57,24 @@ const UpcomingAppointment = () => {
 
   return (
     <Wrapper>
-      {eventList?.map((el, index) => (
-        <CheckUpCard
-          key={index}
-          booking
-          reason={el?.reason}
-          address={el?.address}
-          date={el?.appointment_date.slice(0, 10)}
-          time={el?.start_time}
-          handleDelete={() => handleDeleteAppointment(el?.appointment_id)}
-        />
-      ))}
+      {eventList.length > 0 ? (
+        <>
+          {" "}
+          {eventList?.map((el, index) => (
+            <CheckUpCard
+              key={index}
+              booking
+              reason={el?.reason}
+              address={el?.address}
+              date={el?.appointment_date.slice(0, 10)}
+              time={el?.start_time}
+              handleDelete={() => handleDeleteAppointment(el?.appointment_id)}
+            />
+          ))}
+        </>
+      ) : (
+        <NotFound message={"No Appointment Record Found."} />
+      )}
     </Wrapper>
   );
 };

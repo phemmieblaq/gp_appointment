@@ -26,7 +26,6 @@ const allViews = Object.keys(Views).map((k) => Views[k]);
 
 const Schedule = () => {
   const loginInfo = useSelector((state) => state.user.loginInfo);
-  console.log(loginInfo?.doctorId, "dddddddd");
   const [openModal, setOpenModal] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedStartTime, setSelectedStartTime] = useState(null);
@@ -92,11 +91,11 @@ const Schedule = () => {
             <>
               <h3>Select a Date:</h3>
               {/* <DatePickerWrapper> */}
-                <DatePicker
-                  selected={selectedDate}
-                  onChange={(date) => setSelectedDate(date)}
-                  dateFormat="dd/MM/yyyy"
-                />
+              <DatePicker
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date)}
+                dateFormat="dd/MM/yyyy"
+              />
               {/* </DatePickerWrapper> */}
 
               <TimeSection>

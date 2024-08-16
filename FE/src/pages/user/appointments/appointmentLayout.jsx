@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import Button from "../../../components/mainButton";
 import ActiveNav from "../../../components/navbar/ActiveNav";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const AppointmentLayout = () => {
+  const navigate = useNavigate();
   return (
     <>
       <Container>
@@ -12,7 +13,11 @@ const AppointmentLayout = () => {
           <Title>Bookings</Title>
 
           <ButtonWrapper>
-            <Button bg_color="#3C0FBD" title="Book a session" />
+            <Button
+              bg_color="#3C0FBD"
+              title="Book a session"
+              onClick={() => navigate("/dashboard/book-appointment")}
+            />
           </ButtonWrapper>
         </Heading>
         <LinkWrapper>

@@ -48,16 +48,20 @@ const Home = () => {
             <FlexCard>
               <SessionCard />
               <SecondWrapper>
-                <Heading>Upcoming Appointment</Heading>
-                {eventList?.map((el, index) => (
-                  <CheckUpCard
-                    key={index}
-                    reason={el?.reason}
-                    address={el?.address}
-                    date={el?.appointment_date.slice(0, 10)}
-                    time={el?.start_time}
-                  />
-                ))}
+                {eventList.length > 0 && (
+                  <>
+                    <Heading>Upcoming Appointment</Heading>
+                    {eventList?.map((el, index) => (
+                      <CheckUpCard
+                        key={index}
+                        reason={el?.reason}
+                        address={el?.address}
+                        date={el?.appointment_date.slice(0, 10)}
+                        time={el?.start_time}
+                      />
+                    ))}
+                  </>
+                )}
               </SecondWrapper>
             </FlexCard>
             <SecondWrapper>

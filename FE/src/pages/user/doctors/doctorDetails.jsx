@@ -30,7 +30,6 @@ const DoctorsDetails = () => {
   const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
   const [doctorScheduleList, setDoctorScheduleList] = useState([]);
   const [note, setNote] = useState("");
-  const navigate = useNavigate();
   const { name, email } = useParams();
 
   const handleFetch = async () => {

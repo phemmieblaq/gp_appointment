@@ -3,14 +3,11 @@ import styled from "styled-components";
 import Navbar from "../../components/navbar";
 import Sidebar from "../../components/sidebar";
 import { Outlet } from "react-router-dom";
-
-//import MobileNavbar from "../../components/navbar/MobileNavbar";
 import { doctorSidebarItems, userSidebarItems } from "../../utils/config";
 import { useSelector } from "react-redux";
 
 const UserDashboardLayout = () => {
   const loginInfo = useSelector((state) => state.user.loginInfo);
-  console.log("login", loginInfo);
 
   return (
     <Dashboard>
