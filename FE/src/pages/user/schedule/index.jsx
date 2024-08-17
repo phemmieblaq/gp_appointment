@@ -1,14 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import bookImage from "../../../assets/images/bookImage.png";
-import { IoIosArrowRoundBack } from "react-icons/io";
-import { Header } from "../dashboard/styled";
 import Button from "../../../components/mainButton";
-import { Calendar, momentLocalizer, Views } from "react-big-calendar";
-import moment from "moment";
-import events, { calendarEvents } from "./events";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import BigCalendar from "./test";
 import toast from "react-hot-toast";
 import ScheduleCalendar from "./test";
 import { ReactComponent as CloseIcon } from "../../../assets/svg/close.svg";
@@ -18,11 +11,7 @@ import DatePicker from "react-datepicker";
 import { useSelector } from "react-redux";
 import format from "date-fns/format";
 import { addTimeSlot } from "../../../services/api";
-
-const localizer = momentLocalizer(moment);
-moment.locale("en-GB");
-momentLocalizer(moment);
-const allViews = Object.keys(Views).map((k) => Views[k]);
+import "react-datepicker/dist/react-datepicker.css";
 
 const Schedule = () => {
   const loginInfo = useSelector((state) => state.user.loginInfo);
@@ -90,13 +79,13 @@ const Schedule = () => {
             </Top>
             <>
               <h3>Select a Date:</h3>
-              {/* <DatePickerWrapper> */}
-              <DatePicker
-                selected={selectedDate}
-                onChange={(date) => setSelectedDate(date)}
-                dateFormat="dd/MM/yyyy"
-              />
-              {/* </DatePickerWrapper> */}
+              <DatePickerWrapper>
+                <DatePicker
+                  selected={selectedDate}
+                  onChange={(date) => setSelectedDate(date)}
+                  dateFormat="dd/MM/yyyy"
+                />
+              </DatePickerWrapper>
 
               <TimeSection>
                 <StartTime>
@@ -170,19 +159,7 @@ const TopSection = styled.div`
   justify-content: space-between;
 `;
 const HeaderText = styled.h2``;
-const LeftWrapper = styled.div`
-  width: 100%;
-  padding: 63px 119px 75px 40px;
-`;
-const RightWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  postion: fixed;
-  left: 0px;
-  bottom: 0px;
-  width: 100%;
-`;
+
 const TopTitle = styled.p`
   font-weight: 700;
   font-size: 29px;
@@ -220,7 +197,6 @@ const Form = styled.form``;
 
 const DatePickerWrapper = styled.div`
   margin-bottom: 20px;
-  border: solid red;
 `;
 const TimeSlotWrapper = styled.div`
   display: flex;

@@ -67,7 +67,7 @@ const ResetPassword = () => {
               register={register}
               errorMessage={errors.newPassword?.message}
             />
-            <Button title="Verify email" type="submit" bg_color="#3C0FBD" />
+            <Button title="Submit" type="submit" bg_color="#3C0FBD" />
           </Body>
         </Form>
       </Registration>

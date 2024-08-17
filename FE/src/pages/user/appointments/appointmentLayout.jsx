@@ -1,11 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../../../components/mainButton";
 import ActiveNav from "../../../components/navbar/ActiveNav";
 import { Outlet, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { getUserHistory } from "../../../services/api";
 
 const AppointmentLayout = () => {
+  const loginInfo = useSelector((state) => state.user.loginInfo);
+  const [initialValues, setInitialValues] = useState(null);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchUserHistory = async () => {
+      try {
+        const response = await getUserHistory(loginInfo?.userId);
+        if (response.data) {
+          setInitialValues(response.data);
+        }
+      } catch (error) {
+        console.log("Error fetching user history:", error);
+      }
+    };
+    fetchUserHistory();
+  }, []);
+
   return (
     <>
       <Container>
@@ -16,6 +36,7 @@ const AppointmentLayout = () => {
             <Button
               bg_color="#3C0FBD"
               title="Book a session"
+              disabled={!initialValues}
               onClick={() => navigate("/dashboard/book-appointment")}
             />
           </ButtonWrapper>

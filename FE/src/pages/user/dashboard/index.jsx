@@ -26,7 +26,7 @@ const Home = () => {
   const handleFetchAppointment = async () => {
     try {
       const response =
-      loginInfo?.role === "doctor"
+        loginInfo?.role === "doctor"
           ? await getAppointmentsList(loginInfo?.doctorId)
           : await getAppointmentsListPatientId(loginInfo?.userId);
       console.log(response);

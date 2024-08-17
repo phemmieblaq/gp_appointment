@@ -1,14 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../mainButton";
 import sessionImage from "../../assets/images/session.png";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { getUserHistory } from "../../services/api";
 
 const SessionCard = () => {
   const loginInfo = useSelector((state) => state.user.loginInfo);
-  console.log(loginInfo);
+  const [initialValues, setInitialValues] = useState(null);
+
   const navigate = useNavigate();
+  useEffect(() => {
+    const fetchUserHistory = async () => {
+      try {
+        const response = await getUserHistory(loginInfo?.userId);
+        if (response.data) {
+          setInitialValues(response.data);
+        }
+      } catch (error) {
+        console.log("Error fetching user history:", error);
+      }
+    };
+    fetchUserHistory();
+  }, []);
   return (
     <div>
       <Wrapper>
@@ -46,6 +61,7 @@ const SessionCard = () => {
               type="submit"
               bg_color="#F4F1FE"
               color="#3C0FBD"
+              disabled={!initialValues}
             />
           )}
         </ButtonWrapper>

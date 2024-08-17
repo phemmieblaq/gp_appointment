@@ -129,17 +129,9 @@ const MedicalHistory = () => {
         current_medications: data.current_medications,
         immunization_status: data.immunization_status,
       };
-      if (initialValues) {
-        const response = await updateUserHistory(
-          historyData,
-          initialValues?.data?.history_id,
-          initialValues?.data?.user_id
-        );
-        toast.success(response?.data?.message);
-      } else {
-        const response = await addUserHistory(historyData);
-        toast.success(response?.data?.message);
-      }
+
+      const response = await addUserHistory(historyData);
+      toast.success(response?.data?.message);
     } catch (error) {
       console.log("Error registering user:", error);
       toast.error("Error registering user");
@@ -254,9 +246,13 @@ const MedicalHistory = () => {
                 register={register}
                 errorMessage={errors.immunization_status?.message}
               />
-              <BtnHolder>
-                <Button title="Submit" type="submit" bg_color="#3C0FBD" />
-              </BtnHolder>
+              {initialValues ? (
+                <></>
+              ) : (
+                <BtnHolder>
+                  <Button title="Submit" type="submit" bg_color="#3C0FBD" />
+                </BtnHolder>
+              )}
             </DoubleGridWrapper>
           </div>
         </Body>
