@@ -5,9 +5,6 @@ const bookAppointment = async (req, res) => {
   const { patient_id, reason } = req.body;
   const { scheduleId } = req.params;
 
-  console.log("Request body:", req.body);
-  console.log("Schedule ID:", scheduleId);
-
   try {
     await pool.query("BEGIN");
 
@@ -15,7 +12,6 @@ const bookAppointment = async (req, res) => {
     const scheduleResult = await pool.query(queries.getScheduleById, [
       scheduleId,
     ]);
-    console.log("Schedule Result:", scheduleResult.rows);
 
     if (scheduleResult.rows.length === 0 || scheduleResult.rows[0].is_booked) {
       await pool.query("ROLLBACK");
@@ -36,11 +32,9 @@ const bookAppointment = async (req, res) => {
       schedule.end_time,
       reason,
     ]);
-    console.log("Appointment Result:", result.rows);
 
     // Mark the time slot as booked
     const updateResult = await pool.query(queries.updateTimeSlot, [scheduleId]);
-    console.log("Update Result:", updateResult.rows);
 
     await pool.query("COMMIT");
 
@@ -65,7 +59,6 @@ const GetAppointmentsByDoctorId = async (req, res) => {
     const appointmentResult = await pool.query(queries.getAppointments, [
       doctor_id,
     ]);
-    console.log("Schedule Result:", appointmentResult.rows);
 
     if (appointmentResult.rows.length === 0) {
       await pool.query("ROLLBACK");
@@ -96,7 +89,6 @@ const GetAppointmentsByPatientId = async (req, res) => {
       queries.getAppointmentsByUserId,
       [patient_id]
     );
-    console.log("Schedule Result:", appointmentResult.rows);
 
     if (appointmentResult.rows.length === 0) {
       await pool.query("ROLLBACK");
