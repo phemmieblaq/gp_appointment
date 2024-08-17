@@ -55,7 +55,7 @@ const Sidebar = ({ items }) => {
     >
       <Top>
         <ListWrapper onClick={() => setExpaned(!expanded)}>
-          <HiMenu color="#00A2D4" size={24} />
+          <HiMenu color="##3C0FBD" size={24} />
         </ListWrapper>
         <SidebarLinks>
           {items.map((item, index) => (
@@ -72,7 +72,7 @@ const Sidebar = ({ items }) => {
       <Logout>
         <LogoutWrapper onClick={handleLogoutUser}>
           <HiOutlineLogout color="#ed4e3a" size={20} />
-          {expanded ? <LogoutText>Logouttt</LogoutText> : null}
+          {expanded ? <LogoutText>Logout</LogoutText> : null}
         </LogoutWrapper>
       </Logout>
     </SidebarWrapper>

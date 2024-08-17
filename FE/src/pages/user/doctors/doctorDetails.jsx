@@ -32,28 +32,31 @@ const DoctorsDetails = () => {
   const [note, setNote] = useState("");
   const { name, email } = useParams();
 
-  const handleFetch = async () => {
+  const handleFetchSchedule = async (doctorId) => {
     try {
-      const response = await getDoctorsBySpecialty(name);
-      const finddoc = response?.data?.find((doc) => doc?.email === email);
-      setDoctor(finddoc);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleFetchSchedule = async () => {
-    try {
-      const response = await getScheduleByDoctor(loginInfo?.doctorId);
+      const response = await getScheduleByDoctor(doctorId);
       setDoctorScheduleList(response?.data);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const handleFetch = async () => {
+    try {
+      const response = await getDoctorsBySpecialty(name);
+      if (response?.status === 200) {
+        const finddoc = response?.data?.find((doc) => doc?.email === email);
+        setDoctor(finddoc);
+        handleFetchSchedule(finddoc?.doctor_id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(doctorDetails);
+
   useEffect(() => {
     handleFetch();
-    handleFetchSchedule();
   }, []);
 
   const handleBook = async () => {
@@ -71,6 +74,7 @@ const DoctorsDetails = () => {
       const response = await bookAppointment(requiredData);
       if (response?.status === 200) {
         toast.success(response?.data?.message);
+        handleFetchSchedule(doctorDetails?.doctor_id);
       }
       console.log(response, "result");
     } catch (error) {
@@ -133,6 +137,7 @@ const DoctorsDetails = () => {
               title="Book Appointment"
               onClick={handleBook}
               disabled={!selectedTimeSlot}
+              bg_color={"#3C0FBD"}
             />
           </ButtonHolder>
         </AppointmentSection>

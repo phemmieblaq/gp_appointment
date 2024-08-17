@@ -6,7 +6,7 @@ import { FaGithubAlt } from "react-icons/fa";
 const NotFound = ({ message }) => {
   return (
     <Main>
-      <FaGithubAlt size={100} color="#263684" />
+      <FaGithubAlt size={100} color="#3C0FBD" />
 
       <BoldText>{message}</BoldText>
     </Main>

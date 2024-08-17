@@ -23,6 +23,9 @@ import Schedule from "../pages/user/schedule";
 import Doctors from "../pages/user/doctors";
 import DoctorsDetails from "../pages/user/doctors/doctorDetails";
 import BookAppointment from "../pages/user/booking/bookAppointment";
+import ForgotPassword from "../pages/auth/login/forgotPassword";
+import ResetPassword from "../pages/auth/resetPassword";
+import MedicalHistory from "../pages/user/history";
 
 const AppRouter = () => {
   return (
@@ -36,6 +39,8 @@ const AppRouter = () => {
             <Route path="register" element={<UserRegistration />} />
             <Route path="staff/register" element={<UserRegistration />} />
             <Route path="signin" element={<Login />} />
+            <Route path="forgotpassword" element={<ForgotPassword />} />
+            <Route path="reset-password" element={<ResetPassword />} />
             <Route path="otp" element={<OTP />} />
 
             <Route path="dashboard" element={<UserDashboardLayout />}>
@@ -49,6 +54,7 @@ const AppRouter = () => {
               />
 
               <Route path="settings" element={<Personal />} />
+              <Route path="medical-history" element={<MedicalHistory />} />
               <Route path="schedule" element={<Schedule />} />
               <Route path="explore" element={<Explore />} />
               <Route path="appointments" element={<AppointmentLayout />}>

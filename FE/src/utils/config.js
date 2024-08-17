@@ -23,6 +23,12 @@ export const userSidebarItems = [
   },
   {
     id: 3,
+    title: "History",
+    icon: ResourcesIcon,
+    path: "/dashboard/medical-history",
+  },
+  {
+    id: 4,
     title: "Settings",
     icon: SettingsIcon,
     path: "/dashboard/settings",
@@ -38,12 +44,6 @@ export const doctorSidebarItems = [
   },
   {
     id: 2,
-    title: "Bookings",
-    icon: ResourcesIcon,
-    path: "/dashboard/appointments",
-  },
-  {
-    id: 3,
     title: "Schedule",
     icon: ResourcesIcon,
     path: "/dashboard/schedule",

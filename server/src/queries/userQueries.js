@@ -126,7 +126,28 @@ const addPatientRecord = `
 const deleteAppointmentById =
   "DELETE FROM appointments WHERE appointment_id = $1";
 
+const addHistory = `INSERT INTO medication_history (
+  user_id, sugar_level, blood_pressure, allergies, 
+  last_medication, genotype, blood_group, 
+  vaccination_history, smoking_status, alcohol_consumption, 
+  current_medications, immunization_status
+) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+RETURNING *`;
+
+const historyByUserId = "SELECT * FROM medication_history WHERE user_id = $1";
+
+const updateHistory = `UPDATE medication_history SET 
+sugar_level = $1, blood_pressure = $2, allergies = $3,
+last_medication = $4, genotype = $5, blood_group = $6, 
+vaccination_history = $7, smoking_status = $8, 
+alcohol_consumption = $9, current_medications = $10, 
+immunization_status = $11, updated_at = CURRENT_TIMESTAMP
+WHERE history_id = $12 AND user_id = $13`;
+
 module.exports = {
+  addHistory,
+  historyByUserId,
+  updateHistory,
   addUser,
   getUserByEmail,
   checkEmailExists,

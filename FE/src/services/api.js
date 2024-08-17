@@ -134,12 +134,32 @@ const deleteAppointment = async (appointmentId) => {
 const createTimeSlots = async (timeSlotsData) => {
   return await api.post("/timeslots", timeSlotsData);
 };
-
+const forgotPassword = async (payload) => {
+  return await api.post("/forgot-password", payload);
+};
+const verifyPasswordOTP = async (payload) => {
+  return await api.post("/password/verify-otp", payload);
+};
+const resetPassword = async (payload) => {
+  return await api.post("/reset-password", payload);
+};
+const addUserHistory = async (payload) => {
+  return await api.post("/medical-history", payload);
+};
+const getUserHistory = async (patientId) => {
+  return await api.get(`/medical-history/${patientId}`);
+};
+const updateUserHistory = async (payload, historyId, userId) => {
+  return await api.put(`/medical-history/${historyId}/${userId}`, payload);
+};
 // Export all functions
 export {
   registerUser,
   loginUser,
+  forgotPassword,
+  verifyPasswordOTP,
   verifyOTP,
+  resetPassword,
   getUserById,
   getAllSpecialties,
   getDoctorsBySpecialty,
@@ -149,6 +169,9 @@ export {
   updateUser,
   deleteUser,
   getAppointments,
+  addUserHistory,
+  getUserHistory,
+  updateUserHistory,
   bookAppointment,
   cancelAppointment,
   getAppointmentsList,

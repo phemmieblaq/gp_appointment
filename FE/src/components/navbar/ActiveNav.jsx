@@ -5,21 +5,16 @@ const ActiveNav = ({ index, text, path, defaultActive, status }) => {
   const ActiveStyles = {
     color: "#292D32",
     backgroundColor: "#F4F1FE",
-    // borderBottom: "4px solid #00A2D4",
+    // borderBottom: "4px solid #3c0fbd",
     borderRadius: 0,
   };
   const location = useLocation();
   const isActive = location.pathname === path || (index === 0 && defaultActive);
 
-
   return (
     <Container>
-      <NavLink
-        to={path}
-        style={isActive ? ActiveStyles : {}}
-      >
+      <NavLink to={path} style={isActive ? ActiveStyles : {}}>
         <p>{text}</p>
-
       </NavLink>
     </Container>
   );
@@ -47,9 +42,9 @@ export const Container = styled.div`
     display: flex;
     align-items: center;
     padding: 4px 12px;
-    background-color: #00a2d419;
+    background-color: #3c0fbd19;
     border-radius: 10px;
-    color: #00a2d4;
+    color: #3c0fbd;
     font-size: 14px;
     font-weight: 500;
     height: max-content;

@@ -1,19 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Logout,
   LogoutText,
   LogoutWrapper,
   MobileSidebarWrapper,
-  SidebarContentItemIcon,
-  SidebarContentItemLink,
   SidebarLinks,
-  SideLinkWrapper,
   Top,
 } from "./styled";
 import { HiOutlineLogout } from "react-icons/hi";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { MdClear } from "react-icons/md";
-import { handleLogout as logout } from "utils/globalFunctions";
 import SidebarItem from "./SidebarItem";
 import { logoutUser } from "../../services/api";
 
@@ -40,6 +36,7 @@ const MobileSidebar = ({ items, toggleDrawer }) => {
       <Top>
         <MdClear
           size={25}
+          color="#3c0fbd"
           style={{
             marginBottom: "18px",
             left: "10px",

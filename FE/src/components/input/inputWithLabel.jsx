@@ -76,9 +76,7 @@ const InputWithLabel = ({
   };
 
   return (
-    <Wrapper
-      
-    >
+    <Wrapper>
       <Top>
         {label && <Label className={labelStyle}>{label}</Label>}
 
@@ -87,7 +85,13 @@ const InputWithLabel = ({
       </Top>
 
       <InputWrapper
-        border={errorMessage ? "1px solid red" : active ? "1px solid #00A2D4" : "1px solid #ececec"}
+        border={
+          errorMessage
+            ? "1px solid red"
+            : active
+            ? "1px solid #3c0fbd"
+            : "1px solid #ececec"
+        }
         height={maxHeight}
         className={inputClass}
         ref={inputRef}
@@ -95,7 +99,11 @@ const InputWithLabel = ({
         onBlur={() => handleBorder(false)}
         disable={disable}
       >
-        {leftIcon && <Iconwrapper><img src={leftIcon} alt="" />   </Iconwrapper>}
+        {leftIcon && (
+          <Iconwrapper>
+            <img src={leftIcon} alt="" />{" "}
+          </Iconwrapper>
+        )}
         {leftText && <TextWrapper>{leftText}</TextWrapper>}
         {register ? (
           <Input
@@ -113,7 +121,8 @@ const InputWithLabel = ({
             //onChange={onChange}
             onKeyDown={handleKeyDown}
             defaultValue={defaultValue}
-            {...register(name)} onChange={onChange}
+            {...register(name)}
+            onChange={onChange}
             {...rest}
           />
         ) : (
@@ -136,7 +145,11 @@ const InputWithLabel = ({
             {...rest}
           />
         )}
-        {rightIcon && <RightIconwrapper><img src={rightIcon} alt="" /></RightIconwrapper>}
+        {rightIcon && (
+          <RightIconwrapper>
+            <img src={rightIcon} alt="" />
+          </RightIconwrapper>
+        )}
         {rightText ? (
           <div onClick={() => setShow(!show)}>
             <Show>{!show ? "show" : "hide"}</Show>
@@ -146,7 +159,9 @@ const InputWithLabel = ({
         {overlayComponent && overlayComponent}
       </InputWrapper>
 
-      {bottomText ? <BottomText className={bottomTextClass}>{bottomText}</BottomText> : null}
+      {bottomText ? (
+        <BottomText className={bottomTextClass}>{bottomText}</BottomText>
+      ) : null}
     </Wrapper>
   );
 };

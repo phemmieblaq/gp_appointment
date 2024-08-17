@@ -16,7 +16,7 @@ export const Container = styled(Link)`
   transition: 0.3s ease all;
 
   :hover {
-    background-color: #00a2d455;
+    background-color: #3c0fbd55;
     box-shadow: 0 5px 15px #b0b0b055;
   }
 `;
@@ -25,7 +25,7 @@ export const Top = styled.div`
   display: flex;
   justify-content: flex-end;
   height: 80px;
-  background-color: ${({ color }) => color || "#00A2D4"};
+  background-color: ${({ color }) => color || "#3C0FBD"};
   border-radius: 16px 16px 0 0;
 `;
 export const ContentWrapper = styled.div`
@@ -42,7 +42,7 @@ export const IconWrapper = styled.div`
   justify-content: center;
   width: 90px;
   height: 90px;
-  background-color: #00a2d4;
+  background-color: #3c0fbd;
   border: 3px solid #fff;
   border-radius: 50%;
 

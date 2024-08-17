@@ -3,21 +3,27 @@ import styled from "styled-components";
 import Button from "../mainButton";
 import sessionImage from "../../assets/images/session.png";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const SessionCard = () => {
+  const loginInfo = useSelector((state) => state.user.loginInfo);
+  console.log(loginInfo);
   const navigate = useNavigate();
   return (
     <div>
       <Wrapper>
         <InnerWrapper>
           <ContentWrapper>
-            <Title>Your health is your wealth</Title>
+            <Title>
+              {" "}
+              {loginInfo?.role === "doctor"
+                ? "Your Expertise, Their Well-being"
+                : "Your health is your wealth"}
+            </Title>
             <Content>
-              If you're unsure about how you're feeling or just not quite
-              yourself, it’s important to take action. Don’t ignore the signs;
-              your health is too valuable. Book a session with your doctor today
-              to get the help you need and ensure you stay in the best of
-              health.
+              {loginInfo?.role === "doctor"
+                ? "Your dedication and expertise are crucial in helping patients maintain their health. Stay informed about your upcoming appointments and ensure each patient receives the best care possible. Remember, your role is vital in safeguarding the well-being of those who rely on you."
+                : "If you're unsure about how you're feeling or just not quite yourself, it’s important to take action. Don’t ignore the signs;  your health is too valuable. Book a session with your doctor today  to get the help you need and ensure you stay in the best of health."}
             </Content>
           </ContentWrapper>
           <ImageWrapper>
@@ -25,13 +31,23 @@ const SessionCard = () => {
           </ImageWrapper>
         </InnerWrapper>
         <ButtonWrapper>
-          <Button
-            title="Book a session "
-            onClick={() => navigate("/dashboard/book-appointment")}
-            type="submit"
-            bg_color="#F4F1FE"
-            color="#3C0FBD"
-          />
+          {loginInfo?.role === "doctor" ? (
+            <Button
+              title="Create Schedule "
+              onClick={() => navigate("/dashboard/schedule")}
+              type="submit"
+              bg_color="#F4F1FE"
+              color="#3C0FBD"
+            />
+          ) : (
+            <Button
+              title="Book a session "
+              onClick={() => navigate("/dashboard/book-appointment")}
+              type="submit"
+              bg_color="#F4F1FE"
+              color="#3C0FBD"
+            />
+          )}
         </ButtonWrapper>
       </Wrapper>
     </div>

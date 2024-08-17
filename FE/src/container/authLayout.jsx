@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as Logo } from '../assets/svg/logo.svg';
+import { ReactComponent as Logo } from "../assets/svg/logo.svg";
 import { Link } from "react-router-dom";
-import logo from '../assets/svg/logo.svg';;
+import logo from "../assets/svg/logo.svg";
 
 const AuthLayout = ({ children, hideLeftAt, linkText, link, question }) => {
   return (
@@ -28,13 +28,12 @@ const AuthLayout = ({ children, hideLeftAt, linkText, link, question }) => {
           </LeftDetails>
         </LayoutLeftContent>
       </LayoutLeft>
-      <LayoutRight >
+      <LayoutRight>
         <LogoContainer>
           <img
             src={logo}
             alt="logo"
             style={{ justifyContent: "center", alignItems: "center" }}
-            
           />
         </LogoContainer>
         <div>{children}</div>
@@ -61,7 +60,6 @@ const LayoutLeft = styled.div`
   width: 50%;
   height: 100vh;
   display: none;
-  
 `;
 
 const LayoutLeftContent = styled.div`
@@ -119,7 +117,7 @@ const Question = styled.p`
 const SpanText = styled.p`
   font-size: 16px;
   font-weight: 400;
-  color: #00a2d4;
+  color: #3c0fbd;
 `;
 
 const LogoContainer = styled.div`

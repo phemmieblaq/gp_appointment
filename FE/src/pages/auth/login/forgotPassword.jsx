@@ -8,11 +8,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import Button from "../../../components/mainButton";
-import { userLoginSchema } from "./schema";
-import { loginUser } from "../../../services/api";
+import { userForgotSchema } from "./schema";
+import { forgotPassword } from "../../../services/api";
 import toast from "react-hot-toast";
 import { setLoginInfo } from "../../../redux/Slices";
-const Login = () => {
+const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const {
@@ -21,21 +21,20 @@ const Login = () => {
 
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(userLoginSchema),
+    resolver: yupResolver(userForgotSchema),
   });
 
   const submitForm = async (data) => {
     const userData = {
       email: data?.email,
-      password: data?.password,
     };
-
+    console.log(userData);
     try {
-      const response = await loginUser(userData);
+      const response = await forgotPassword(userData);
       console.log(response);
 
-      toast.success("check your email for 6-digit OTP");
-      navigate("/otp");
+      toast.success(response?.data?.message);
+      navigate("/otp", { state: { from: "forgot" } });
       //console.log('User registered successfully:', response.data);
     } catch (error) {
       toast.error(error.response?.data?.error);
@@ -49,8 +48,8 @@ const Login = () => {
         <Registration>
           <Form onSubmit={handleSubmit(submitForm)}>
             <HeadText
-              title="Welcome Back"
-              body="Sign in to your account"
+              title="Forgot Password"
+              body="Please provide your email address"
               align="flex-start"
               margintop="8px"
             />
@@ -64,38 +63,10 @@ const Login = () => {
                   register={register}
                   errorMessage={errors.email?.message}
                 />
-
-                <InputWithLabel
-                  placeholder="********"
-                  label="Password"
-                  type="password"
-                  rightText
-                  name="password"
-                  register={register}
-                  errorMessage={errors.password?.message}
-                />
-
-                <NavLink
-                  to="/forgotpassword"
-                  style={{
-                    textDecoration: "none",
-                    color: "blue",
-                    fontSize: "14px",
-                    fontWeight: "400",
-                  }}
-                >
-                  Forgot password?
-                </NavLink>
               </div>
-              <Button
-                title="Sign in"
-                //onClick={{}}
-                type="submit"
-                bg_color="#3C0FBD"
-              />
+              <Button title="Submit" type="submit" bg_color="#3C0FBD" />
             </Body>
           </Form>
-          {/* <AppFeedback subProject="Sign In" /> */}
         </Registration>
         <OrWrapper>
           <hr />
@@ -106,8 +77,8 @@ const Login = () => {
           <TextsWithLink
             text={[
               {
-                text: "Don't have an account? ",
-                link: { text: "Sign Up", to: "/register" },
+                text: "Remember Password? ",
+                link: { text: "Sign In", to: "/signin" },
               },
             ]}
             // $mobileResponsive
@@ -118,4 +89,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

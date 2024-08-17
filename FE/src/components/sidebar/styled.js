@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 export const Top = styled.div``;
 
 export const SidebarWrapper = styled.div`
@@ -59,7 +58,7 @@ export const SideLinkWrapper = styled.div`
 
   :hover {
     > a {
-      color: #00a2d4;
+      color: #3c0fbd;
     }
   }
 `;
@@ -95,7 +94,7 @@ export const LogoutWrapper = styled.div`
 `;
 
 export const LogoutText = styled.div`
-  color: #ed4e3a;
+  color: red;
   margin-left: 8px;
 `;
 

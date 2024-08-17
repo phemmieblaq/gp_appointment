@@ -6,39 +6,29 @@ import { HeadText } from "../../../components/texts";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputWithLabel } from "../../../components/input";
 import { useForm } from "react-hook-form";
-import { otpSchema } from "../booking/schema";
 import Button from "../../../components/mainButton";
-import { verifyOTP, verifyPasswordOTP } from "../../../services/api";
+import {
+  resetPassword,
+  verifyOTP,
+  verifyPasswordOTP,
+} from "../../../services/api";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoginInfo } from "../../../redux/Slices";
+import { passwordSchema } from "../login/schema";
 
-const OTP = () => {
+const ResetPassword = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const { state } = location;
+
   const submitForm = async (data) => {
-    const userData = {
-      otp: data?.otp,
+    const requiredData = {
+      newPassword: data.newPassword,
     };
-
     try {
-      if (state?.from === "forgot") {
-        const response = await verifyPasswordOTP(userData);
-        console.log(response.data);
-
-        toast.success(response?.data?.message);
-        navigate("/reset-password");
-      } else {
-        const response = await verifyOTP(userData);
-        console.log(response.data);
-        dispatch(setLoginInfo(response.data)); // Save user info to Redux store
-        toast.success("Login Succesfully");
-        navigate("/dashboard");
-        console.log("Login successfully:", response.data);
-      }
+      const response = await resetPassword(requiredData);
+      toast.success(response?.data?.message);
+      navigate("/signin");
     } catch (error) {
       toast.error(error.message);
       console.log("invalid otp:", error);
@@ -55,30 +45,27 @@ const OTP = () => {
 
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(otpSchema),
+    resolver: yupResolver(passwordSchema),
   });
   return (
     <AuthLayout>
       <Registration>
         <Form onSubmit={handleSubmit(submitForm)}>
           <HeadText
-            title="Verification"
-            body={
-              state?.from === "forgot"
-                ? "Please provide the 6-digit code sent to your email to reset your password"
-                : "Please provide the 6-digit code sent to your email to verify and set up your account"
-            }
+            title="Reset Password"
+            body={"Provide a new password"}
             align="flex-start"
             margintop="8px"
           />
           <Body>
             <InputWithLabel
-              placeholder="Enter the 6 digits otp"
-              label="6-didgit code "
-              type="number"
-              name="otp"
+              placeholder="********"
+              label="Password"
+              type="password"
+              rightText
+              name="newPassword"
               register={register}
-              errorMessage={errors.otp?.message}
+              errorMessage={errors.newPassword?.message}
             />
             <Button title="Verify email" type="submit" bg_color="#3C0FBD" />
           </Body>
@@ -88,4 +75,4 @@ const OTP = () => {
   );
 };
 
-export default OTP;
+export default ResetPassword;

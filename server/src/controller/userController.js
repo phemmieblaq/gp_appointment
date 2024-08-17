@@ -297,7 +297,7 @@ const verifyOTP = async (req, res) => {
       role: getUser.rows[0].role,
       first_name: getUser.rows[0].first_name,
       last_name: getUser.rows[0].last_name,
-      doctorId: getDoctorById.rows[0].doctor_id,
+      doctorId: getDoctorById?.rows[0]?.doctor_id,
     });
   } else {
     res.status(401).json({ error: "Invalid OTP" });
@@ -345,8 +345,7 @@ const forgotPassword = async (req, res) => {
     }
 
     res.json({
-      message:
-        "If an account with that email exists, a password reset OTP has been sent.",
+      message: " password reset OTP has been sent to you email.",
     });
   } catch (error) {
     console.log("error:", error);
@@ -359,13 +358,13 @@ const verifyPasswordOtp = async (req, res) => {
   console.log(email);
 
   const { otp } = req.body;
+  console.log(otp, "adddd");
   try {
     await pool.query("SET search_path TO public");
     const userResult = await pool.query(queries.getUserByEmail, [email]);
     if (userResult.rows.length === 0) {
       return res.status(404).json({ error: "User not found" });
     }
-    // const user = userResult.rows[0];
 
     // Get the OTP from the session
     const otpRecord = req.session.otp;
@@ -374,9 +373,15 @@ const verifyPasswordOtp = async (req, res) => {
       return res.status(404).json({ error: "OTP not found" });
     }
 
-    const otpExpired = new Date() > new Date(otpRecord.expiresAt);
+    const now = new Date();
+    const expiresAt = new Date(otpRecord.expiresAt);
+    console.log("Current Time:", now);
+    console.log("OTP Expiry Time:", expiresAt);
+    console.log(otpRecord);
+    const otpExpired = now > expiresAt;
+    console.log("Is OTP expired?", otpExpired);
 
-    if (otpRecord.otp !== otp || otpExpired) {
+    if (otpRecord.otp !== otp || otpExpired === true) {
       return res
         .status(401)
         .json({ error: otpExpired ? "OTP expired" : "Invalid OTP" });
@@ -389,6 +394,7 @@ const verifyPasswordOtp = async (req, res) => {
     res.status(500).json({ error: error });
   }
 };
+
 const passwordReset = async (req, res) => {
   const { newPassword } = req.body;
   const email = req.session.user.email;
@@ -462,6 +468,119 @@ const deleteUserByEmail = async (req, res) => {
   }
 };
 
+//User histroy
+const addUserHistory = async (req, res) => {
+  console.log(req.user);
+  const userId = req.user.userId;
+  const {
+    sugar_level,
+    blood_pressure,
+    allergies,
+    last_medication,
+    genotype,
+    blood_group,
+    vaccination_history,
+    smoking_status,
+    alcohol_consumption,
+    current_medications,
+    immunization_status,
+  } = req.body;
+
+  try {
+    const result = await pool.query(queries.addHistory, [
+      userId,
+      sugar_level,
+      blood_pressure,
+      allergies,
+      last_medication,
+      genotype,
+      blood_group,
+      vaccination_history,
+      smoking_status,
+      alcohol_consumption,
+      current_medications,
+      immunization_status,
+    ]);
+
+    res.status(201).json({
+      message: "User Medical History added successfully",
+      data: result.rows[0],
+    });
+  } catch (error) {
+    console.error("An unexpected database error occurred:", error);
+    res.status(500).json({ error: "An unexpected error occurred." });
+  }
+};
+
+const getHistoryByUserId = async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    const result = await pool.query(queries.historyByUserId, [userId]);
+
+    if (result.rows.length > 0) {
+      res.json({ data: result.rows[0] });
+    } else {
+      res
+        .status(404)
+        .json({ message: "No medical history found for this user." });
+    }
+  } catch (error) {
+    console.error("An unexpected database error occurred:", error);
+    res.status(500).json({ error: "An unexpected error occurred." });
+  }
+};
+
+const updateUserHistory = async (req, res) => {
+  const userId = req.params.userId;
+  const historyId = req.params.historyId;
+  const {
+    sugar_level,
+    blood_pressure,
+    allergies,
+    last_medication,
+    genotype,
+    blood_group,
+    vaccination_history,
+    smoking_status,
+    alcohol_consumption,
+    current_medications,
+    immunization_status,
+  } = req.body;
+  console.log(userId, historyId);
+  console.log(req.body);
+  try {
+    const result = await pool.query(queries.updateHistory, [
+      sugar_level,
+      blood_pressure,
+      allergies,
+      last_medication,
+      genotype,
+      blood_group,
+      vaccination_history,
+      smoking_status,
+      alcohol_consumption,
+      current_medications,
+      immunization_status,
+      historyId,
+      userId,
+    ]);
+    console.log(result, "ddddtttt");
+    if (result.rowCount !== 1) {
+      return res
+        .status(404)
+        .json({ message: "Error occured while updating Medical history" });
+    }
+
+    res.status(200).json({
+      message: "User Medical History updated successfully",
+    });
+  } catch (error) {
+    console.error("An unexpected database error occurred:", error);
+    res.status(500).json({ error: "An unexpected error occurred." });
+  }
+};
+
 module.exports = {
   addUser,
   getUserByEmail,
@@ -473,4 +592,7 @@ module.exports = {
   verifyPasswordOtp,
   passwordReset,
   deleteUserByEmail,
+  addUserHistory,
+  getHistoryByUserId,
+  updateUserHistory,
 };

@@ -81,5 +81,12 @@ router.delete(
   appointmentController.DeleteAppointmentsById
 );
 
-// router.post("/blog", authenticateToken, blogController.postBlog);
+router.post("/medical-history/", authorizer, userController.addUserHistory);
+router.get("/medical-history/:userId", userController.getHistoryByUserId);
+router.put(
+  "/medical-history/:historyId/:userId",
+  authorizer,
+  userController.updateUserHistory
+);
+
 module.exports = router;

@@ -1,4 +1,3 @@
-
 import styled from "styled-components";
 
 import { Link } from "react-router-dom";
@@ -16,7 +15,8 @@ export const NavWrapper = styled.div`
   border-bottom: ${(prop) => prop.border};
   background-color: white;
   z-index: 4;
-  box-shadow: ${(props) => (props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : "")};
+  box-shadow: ${(props) =>
+    props.boxshadow === "true" ? "0px 10px 15px -5px #9596971a" : ""};
 
   @media screen and (max-width: 701px) {
     display: ${({ $displayMobile }) => ($displayMobile ? "" : "none")};
@@ -79,7 +79,7 @@ export const SearchIconWrapper = styled.div`
 
 export const SearchBarWrapper = styled.div`
   max-width: 563px;
-  border: 1px solid #CCC4C4;
+  border: 1px solid #ccc4c4;
   border-radius: 20px;
   background: #fafafa;
   display: flex;
@@ -161,7 +161,7 @@ export const NotificationMessages = styled.div`
   }
 
   // ::-webkit-scrollbar-thumb:hover {
-  //   background-color: #00a2d4;
+  //   background-color: #3c0fbd;
   // }
 `;
 
@@ -170,7 +170,7 @@ export const Message = styled.div`
   border-top: solid 1px #edf1f6;
 
   :hover {
-    background-color: #00a2d419;
+    background-color: #3c0fbd19;
     cursor: pointer;
   }
 
@@ -181,7 +181,7 @@ export const Message = styled.div`
     font-weight: 500;
   }
   span {
-    color: #00a2d4;
+    color: #3c0fbd;
     font-size: 14px;
   }
 
@@ -288,7 +288,7 @@ export const DropdownList = styled.li`
   font-size: 13px;
 
   :hover {
-    background-color: #00a2d419;
+    background-color: #3c0fbd19;
     cursor: pointer;
   }
 `;

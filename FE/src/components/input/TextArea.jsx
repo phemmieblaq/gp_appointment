@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   InputWrapper,
   Wrapper,
-
   Label,
   Iconwrapper,
   RightIconwrapper,
@@ -77,9 +76,7 @@ const Textarea = ({
   };
 
   return (
-    <Wrapper
-      
-    >
+    <Wrapper>
       <Top>
         {label && <Label className={labelStyle}>{label}</Label>}
 
@@ -88,7 +85,13 @@ const Textarea = ({
       </Top>
 
       <InputWrapper
-        border={errorMessage ? "1px solid red" : active ? "1px solid #00A2D4" : "1px solid #ececec"}
+        border={
+          errorMessage
+            ? "1px solid red"
+            : active
+            ? "1px solid #3c0fbd"
+            : "1px solid #ececec"
+        }
         min-height={minHeight}
         className={inputClass}
         ref={inputRef}
@@ -96,7 +99,11 @@ const Textarea = ({
         onBlur={() => handleBorder(false)}
         disable={disable}
       >
-        {leftIcon && <Iconwrapper><img src={leftIcon} alt="" />   </Iconwrapper>}
+        {leftIcon && (
+          <Iconwrapper>
+            <img src={leftIcon} alt="" />{" "}
+          </Iconwrapper>
+        )}
         {leftText && <TextWrapper>{leftText}</TextWrapper>}
         {register ? (
           <TextArea
@@ -116,7 +123,9 @@ const Textarea = ({
             defaultValue={defaultValue}
             {...register(name, { onChange: onChange })}
             {...rest}
-          > </TextArea>
+          >
+            {" "}
+          </TextArea>
         ) : (
           <TextArea
             ref={ref}
@@ -137,7 +146,11 @@ const Textarea = ({
             {...rest}
           />
         )}
-        {rightIcon && <RightIconwrapper><img src={rightIcon} alt="" /></RightIconwrapper>}
+        {rightIcon && (
+          <RightIconwrapper>
+            <img src={rightIcon} alt="" />
+          </RightIconwrapper>
+        )}
         {rightText ? (
           <div onClick={() => setShow(!show)}>
             <Show>{!show ? "show" : "hide"}</Show>
@@ -147,7 +160,9 @@ const Textarea = ({
         {overlayComponent && overlayComponent}
       </InputWrapper>
 
-      {bottomText ? <BottomText className={bottomTextClass}>{bottomText}</BottomText> : null}
+      {bottomText ? (
+        <BottomText className={bottomTextClass}>{bottomText}</BottomText>
+      ) : null}
     </Wrapper>
   );
 };

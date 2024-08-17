@@ -1,5 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { ArrowDown, DropDownBtn, DropDownContent, DropDownItems, DropDownMobileContent, TextContainer } from "./style";
+import {
+  ArrowDown,
+  DropDownBtn,
+  DropDownContent,
+  DropDownItems,
+  DropDownMobileContent,
+  TextContainer,
+} from "./style";
 import { IoIosArrowDown } from "react-icons/io";
 import styled from "styled-components";
 
@@ -63,14 +70,20 @@ const CustomDropdown = ({
                 </LengthContainer>
               )}
             </SubTopSelected>
-            <ArrowDown onClick={() => setIsActive(!isActive)} isActive={isActive}>
+            <ArrowDown
+              onClick={() => setIsActive(!isActive)}
+              isActive={isActive}
+            >
               <IoIosArrowDown />
             </ArrowDown>
           </TopSelected>
         ) : (
           <>
             <TextContainer> {selected}</TextContainer>
-            <ArrowDown onClick={() => setIsActive(!isActive)} isActive={isActive}>
+            <ArrowDown
+              onClick={() => setIsActive(!isActive)}
+              isActive={isActive}
+            >
               <IoIosArrowDown />
             </ArrowDown>
           </>
@@ -160,5 +173,5 @@ const LengthText = styled.h3`
 
   /* Blue 2 */
 
-  color: #00a2d4;
+  color: #3c0fbd;
 `;

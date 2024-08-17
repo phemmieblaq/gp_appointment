@@ -33,7 +33,7 @@ const NumberInput = ({
   }, [active]);
 
   const activeStyle = {
-    border: "1px solid #00a2d4",
+    border: "1px solid #3c0fbd",
     height: "48px",
     borderRadius: "10px",
     // marginTop: "20px",
@@ -53,9 +53,7 @@ const NumberInput = ({
   };
 
   return (
-    <Wrapper
-      
-    >
+    <Wrapper>
       <Top>
         {label && <Label className={labelStyle}>{label}</Label>}
         {errorMessage ? <ErrMsg>{errorMessage}</ErrMsg> : null}

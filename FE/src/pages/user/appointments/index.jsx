@@ -43,12 +43,7 @@ const UpcomingAppointment = () => {
       if (response?.status === 200) {
         toast.success(response?.data?.message);
         // window.location.reload();
-        const responseList = await getAppointmentsListPatientId(
-          loginInfo?.userId
-        );
-        if (responseList?.status === 200) {
-          setEventList(responseList?.data?.data);
-        }
+        handleFetchAppointment();
       }
     } catch (error) {
       console.log(error);

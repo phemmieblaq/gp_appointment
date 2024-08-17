@@ -81,7 +81,7 @@ const InputWithTitle = ({
       height: 26,
       //   borderRadius: 15,
       //   marginLeft: 10,
-      outlineColor: "#00A2D4",
+      outlineColor: "#3c0fbd",
     }),
     option: (provided, state) => ({
       ...provided,
@@ -109,7 +109,7 @@ const InputWithTitle = ({
           errorMessage
             ? "1px solid red"
             : active
-            ? "1px solid #00A2D4"
+            ? "1px solid #3c0fbd"
             : "1px solid #ececec"
         }
         ref={inputRef}

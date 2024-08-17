@@ -232,12 +232,12 @@ const TimeSlotCard = styled.div`
   display: inline-block;
   padding: 10px 20px;
   margin: 8px;
-  background-color: ${({ selected }) => (selected ? "#00a2d4" : "#f0f0f0")};
+  background-color: ${({ selected }) => (selected ? "#3c0fbd" : "#f0f0f0")};
   color: ${({ selected }) => (selected ? "#fff" : "#333")};
   border-radius: 5px;
   cursor: pointer;
   &:hover {
-    background-color: ${({ selected }) => (selected ? "#00a2d4" : "#e0e0e0")};
+    background-color: ${({ selected }) => (selected ? "#3c0fbd" : "#e0e0e0")};
   }
 `;
 
