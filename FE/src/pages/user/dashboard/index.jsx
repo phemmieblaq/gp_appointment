@@ -43,6 +43,7 @@ const Home = () => {
       console.log(error);
     }
   };
+  console.log(eventList, "van");
 
   useEffect(() => {
     handleFetchAppointment();
