@@ -95,7 +95,6 @@ const addUser = async (req, res) => {
       ]);
     }
 
-    console.log(saveUser);
     res
       .status(201)
       .json({ message: "User added successfully", data: saveUser.rows[0] });
@@ -248,8 +247,7 @@ const loginUser = async (req, res) => {
 
 const verifyOTP = async (req, res) => {
   const { otp } = req.body;
-  console.log("Received OTP:", req.body.otp);
-  console.log("Expected OTP:", req.session.otp);
+
   const otpExpired = new Date() > new Date(req.session.otp.expiresAt);
 
   if (req.session.otp.otp === otp && !otpExpired) {
@@ -264,7 +262,7 @@ const verifyOTP = async (req, res) => {
       { userId: req.session.user.id, email: req.session.user.email },
       process.env.REFRESH_TOKEN_SECRET
     );
-    console.log("bamidele access", accessToken);
+
     // Set the tokens in HttpOnly cookies
     // Removed 'secure: true' for local development on HTTP
     res.cookie("accessToken", accessToken, {
@@ -279,13 +277,13 @@ const verifyOTP = async (req, res) => {
     });
 
     const userId = req.session.user.id;
-    console.log(userId, "id phone");
+
     const email = req.session.user.email;
 
     // Clear the session data
     req.session.otp = null;
     req.session.user = null;
-    console.log(req?.session);
+
     const getUser = await pool.query(queries.getUserById, [userId]);
     const getDoctorById = await pool.query(queries.getDoctorById, [userId]);
     res.status(200).json({
@@ -319,7 +317,7 @@ const forgotPassword = async (req, res) => {
 
     // Generate a One-Time Password (OTP)
     const otp = generateOTP();
-    console.log(otp);
+
     req.session.otp = otp;
     const timestamp = new Date(otp?.expiresAt);
     const now = new Date();
@@ -329,8 +327,6 @@ const forgotPassword = async (req, res) => {
       differenceInMilliseconds / 1000 / 60
     );
 
-    console.log(differenceInMinutes);
-
     // Send email with OTP
     try {
       await transporter.sendMail({
@@ -339,7 +335,6 @@ const forgotPassword = async (req, res) => {
         subject: "Password Reset",
         text: `Your One-Time Password (OTP) is: ${otp?.otp} and expires in ${differenceInMinutes} minutes `,
       });
-      console.log("Email sent successfully");
     } catch (error) {
       console.error("Failed to send email:", error);
     }
@@ -355,10 +350,9 @@ const forgotPassword = async (req, res) => {
 
 const verifyPasswordOtp = async (req, res) => {
   const email = req.session.user.email;
-  console.log(email);
 
   const { otp } = req.body;
-  console.log(otp, "adddd");
+
   try {
     await pool.query("SET search_path TO public");
     const userResult = await pool.query(queries.getUserByEmail, [email]);
@@ -375,11 +369,8 @@ const verifyPasswordOtp = async (req, res) => {
 
     const now = new Date();
     const expiresAt = new Date(otpRecord.expiresAt);
-    console.log("Current Time:", now);
-    console.log("OTP Expiry Time:", expiresAt);
-    console.log(otpRecord);
+
     const otpExpired = now > expiresAt;
-    console.log("Is OTP expired?", otpExpired);
 
     if (otpRecord.otp !== otp || otpExpired === true) {
       return res
@@ -470,7 +461,6 @@ const deleteUserByEmail = async (req, res) => {
 
 //User histroy
 const addUserHistory = async (req, res) => {
-  console.log(req.user);
   const userId = req.user.userId;
   const {
     sugar_level,
@@ -547,8 +537,7 @@ const updateUserHistory = async (req, res) => {
     current_medications,
     immunization_status,
   } = req.body;
-  console.log(userId, historyId);
-  console.log(req.body);
+
   try {
     const result = await pool.query(queries.updateHistory, [
       sugar_level,
@@ -565,7 +554,7 @@ const updateUserHistory = async (req, res) => {
       historyId,
       userId,
     ]);
-    console.log(result, "ddddtttt");
+
     if (result.rowCount !== 1) {
       return res
         .status(404)
