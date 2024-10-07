@@ -1,0 +1,11 @@
+node_modules
+<<<<<<< HEAD
+=======
+
+
+
+
+node_modules
+# Keep environment variables out of version control
+>>>>>>> 4dc7301 (server added)
+.env
